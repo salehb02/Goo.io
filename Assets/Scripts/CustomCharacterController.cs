@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CustomCharacterController : MonoBehaviour
@@ -6,6 +7,13 @@ public class CustomCharacterController : MonoBehaviour
     public GameObject ragdoll;
     public SkinnedMeshRenderer skinnedMesh;
     public Color normalColor;
+    public GameObject gooEnterance;
+
+    [Space(2)]
+    [Header("AI")]
+    public GameObject[] patrolWaypoints;
+    public float restInWaypointTime = 3f;
+    private int _currentPointIndex;
 
     private Animator _animator;
     private Vector3 _direction;
@@ -18,6 +26,9 @@ public class CustomCharacterController : MonoBehaviour
         _controller = GetComponent<CharacterController>();
 
         SetSkinColor(normalColor);
+
+        if (patrolWaypoints.Length > 0)
+            StartCoroutine(AIPatrolCoroutine());
     }
 
     private void Update()
@@ -28,21 +39,44 @@ public class CustomCharacterController : MonoBehaviour
         _controller.SimpleMove(_currentDirection * speed);
 
         // Rotate transform to direction
-        if(_currentDirection != Vector3.zero)
-        transform.rotation = Quaternion.LookRotation(_currentDirection);
+        if (_currentDirection != Vector3.zero)
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_currentDirection), Time.deltaTime * 10f);
 
         // Set animator movement speed
         _animator.SetFloat("Speed", _currentDirection.magnitude);
     }
 
-    public void Movement(Vector3 vector3)
+    private IEnumerator AIPatrolCoroutine()
+    {
+        Movement((patrolWaypoints[_currentPointIndex].transform.position - transform.position).normalized / 2f);
+
+        yield return new WaitUntil(() => Vector3.Distance(transform.position, patrolWaypoints[_currentPointIndex].transform.position) <= 1);
+
+        Movement(Vector3.zero);
+
+        if (_currentPointIndex < patrolWaypoints.Length - 1)
+            _currentPointIndex++;
+        else
+            _currentPointIndex = 0;
+
+        yield return new WaitForSeconds(restInWaypointTime);
+
+        StartCoroutine(AIPatrolCoroutine());
+    }
+
+    public void Movement(Vector3 vector3, bool force = false)
     {
         _direction = vector3;
+
+        if (force)
+            _currentDirection = vector3;
     }
 
     public void Capture(Color color)
     {
         SetSkinColor(color);
+        StopCoroutine(AIPatrolCoroutine());
+        Movement(Vector3.zero, true);
     }
 
     private void SetSkinColor(Color color)

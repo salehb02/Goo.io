@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerData : MonoBehaviour, IJoystickControllable
@@ -8,6 +9,7 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
     private GooController _gooController;
     private CustomCharacterController _characterController;
     private GameManager _gameManager;
+    private Vector3 _lastGooPosition;
 
     private bool _gooMode;
 
@@ -46,7 +48,10 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         if(_characterController)
         {
             _gooController.transform.SetParent(null);
+            _gooController.EnableColliders();
             _gooController.gameObject.SetActive(true);
+            _gooController.transform.position = _lastGooPosition;
+            _gameManager.UpdateCameraFollower();
             transform.SetParent(_characterController.transform);
             transform.localPosition = Vector3.zero;
             
@@ -59,22 +64,21 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
             ragdollSkin.materials = ragdollMats;
 
             Destroy(_characterController.gameObject);
-            _gameManager.UpdateCameraFollower();
         }
     }
 
     public void GetIntoCharacter(CustomCharacterController character)
     {
         _characterController = character;
-        _gooController.gameObject.SetActive(false);
-        _gooController.transform.SetParent(_characterController.transform);
-        transform.SetParent(_characterController.transform);
-        transform.localPosition = Vector3.zero;
         _gooMode = false;
         _gameManager.UpdateCameraFollower();
+        transform.SetParent(_characterController.transform);
+        transform.localPosition = Vector3.zero;
         _gameManager.EnterToCharacter();
-        _gooController.Movement(Vector3.zero, true);
         _characterController.Capture(gooColor);
+
+        _lastGooPosition = _gooController.transform.position;
+        _gooController.MoveToBody(_characterController.gooEnterance.transform.position, _characterController.gooEnterance.transform);
     }
 
     public Transform GetCameraTarget()

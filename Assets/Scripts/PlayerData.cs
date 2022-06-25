@@ -3,6 +3,8 @@ using UnityEngine;
 public class PlayerData : MonoBehaviour, IJoystickControllable
 {
     public Collider trigger;
+    public Color gooColor;
+
     private GooController _gooController;
     private CustomCharacterController _characterController;
     private GameManager _gameManager;
@@ -47,7 +49,15 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
             _gooController.gameObject.SetActive(true);
             transform.SetParent(_characterController.transform);
             transform.localPosition = Vector3.zero;
-            Instantiate(_characterController.ragdoll, _characterController.transform.position, _characterController.transform.rotation, null);
+            
+            // Instantiate ragdoll
+            var ragdoll = Instantiate(_characterController.ragdoll, _characterController.transform.position, _characterController.transform.rotation, null);
+            var ragdollSkin = ragdoll.GetComponentInChildren<SkinnedMeshRenderer>();
+            var ragdollMats = ragdollSkin.sharedMaterials;
+            foreach (var mat in ragdollMats)
+                mat.SetColor("_BaseColor", _characterController.normalColor);
+            ragdollSkin.materials = ragdollMats;
+
             Destroy(_characterController.gameObject);
             _gameManager.UpdateCameraFollower();
         }
@@ -64,6 +74,7 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         _gameManager.UpdateCameraFollower();
         _gameManager.EnterToCharacter();
         _gooController.Movement(Vector3.zero, true);
+        _characterController.Capture(gooColor);
     }
 
     public Transform GetCameraTarget()

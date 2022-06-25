@@ -4,6 +4,8 @@ public class CustomCharacterController : MonoBehaviour
 {
     public float speed = 2f;
     public GameObject ragdoll;
+    public SkinnedMeshRenderer skinnedMesh;
+    public Color normalColor;
 
     private Animator _animator;
     private Vector3 _direction;
@@ -14,6 +16,8 @@ public class CustomCharacterController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
+
+        SetSkinColor(normalColor);
     }
 
     private void Update()
@@ -34,5 +38,18 @@ public class CustomCharacterController : MonoBehaviour
     public void Movement(Vector3 vector3)
     {
         _direction = vector3;
+    }
+
+    public void Capture(Color color)
+    {
+        SetSkinColor(color);
+    }
+
+    private void SetSkinColor(Color color)
+    {
+        var mats = skinnedMesh.sharedMaterials;
+        foreach (var mat in mats)
+            mat.SetColor("_BaseColor", color);
+        skinnedMesh.materials = mats;
     }
 }

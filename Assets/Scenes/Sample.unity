@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 30686153}
+  gooColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!4 &30686152
 Transform:
   m_ObjectHideFlags: 0
@@ -938,7 +939,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161232284}
   serializedVersion: 7
-  lengthInSec: 2
+  lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -1013,7 +1014,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1066,7 +1067,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1182,7 +1183,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.8
+      scalar: 0.7
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1504,7 +1505,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1557,11 +1558,11 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 1
+    radiusThickness: 0
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -1644,7 +1645,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.25
+      value: 0.2
       mode: 0
       spread: 0
       speed:
@@ -1763,7 +1764,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 10
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1816,7 +1817,7 @@ ParticleSystem:
     rateOverDistance:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 10
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2193,7 +2194,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 0
+    enabled: 1
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -4510,7 +4511,7 @@ ParticleSystem:
   CollisionModule:
     enabled: 0
     serializedVersion: 4
-    type: 0
+    type: 1
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
@@ -4573,7 +4574,7 @@ ParticleSystem:
     m_Bounce:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5934,7 +5935,7 @@ Transform:
   m_GameObject: {fileID: 1518817236}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: -2.71}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_Children:
   - {fileID: 1161232285}
   - {fileID: 30686152}
@@ -6491,9 +6492,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8434667239807172770, guid: b2d42c13f9bdfc74c87d10e6f6d1749d, type: 3}
+      propertyPath: skinnedMesh
+      value: 
+      objectReference: {fileID: 8736495406854209382}
+    - target: {fileID: 8434667239807172770, guid: b2d42c13f9bdfc74c87d10e6f6d1749d, type: 3}
+      propertyPath: normalColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434667239807172770, guid: b2d42c13f9bdfc74c87d10e6f6d1749d, type: 3}
+      propertyPath: normalColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434667239807172770, guid: b2d42c13f9bdfc74c87d10e6f6d1749d, type: 3}
+      propertyPath: normalColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434667239807172770, guid: b2d42c13f9bdfc74c87d10e6f6d1749d, type: 3}
+      propertyPath: normalColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8776562378228235758, guid: b2d42c13f9bdfc74c87d10e6f6d1749d, type: 3}
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2d42c13f9bdfc74c87d10e6f6d1749d, type: 3}
+--- !u!137 &8736495406854209382 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 879241390622353076, guid: b2d42c13f9bdfc74c87d10e6f6d1749d, type: 3}
+  m_PrefabInstance: {fileID: 8434667238891313618}
+  m_PrefabAsset: {fileID: 0}

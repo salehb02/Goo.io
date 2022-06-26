@@ -4,8 +4,8 @@ public class GameManager : MonoBehaviour
 {
     public FixedJoystick joyStick;
     public PlayerData startPlayer;
-
     public PlayerData[] players;
+    public string[] nicknames;
 
     private IJoystickControllable _currentControllable;
     private CameraFollower _camera;
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         Player = startPlayer;
         _camera = FindObjectOfType<CameraFollower>();
         _presentor = GetComponent<GameManagerPresentor>();
-       
+
         UpdateCameraFollower();
         GetPlayers();
         ExitToGoo();
@@ -37,7 +37,20 @@ public class GameManager : MonoBehaviour
         _camera.SetTarget(startPlayer.GetCameraTarget());
     }
 
-    private void GetPlayers() => players = FindObjectsOfType<PlayerData>();
+    private void GetPlayers()
+    {
+        players = FindObjectsOfType<PlayerData>();
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].Enemy = players[i] == Player ? false : true;
+
+            if (players[i].Enemy)
+            {
+                players[i].SetName(nicknames[Random.Range(0, nicknames.Length)]);
+            }
+        }
+    }
 
     public void EnterToCharacter()
     {

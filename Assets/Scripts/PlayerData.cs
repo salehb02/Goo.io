@@ -1,31 +1,60 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerData : MonoBehaviour, IJoystickControllable
 {
     public Collider trigger;
     public Color gooColor;
 
+    public int maxHealth = 10;
+
+    [Space(2)]
+    [Header("UI")]
+    public GameObject UIObject;
+    public Slider healthbar;
+    public TextMeshProUGUI nameText;
+
     private GooController _gooController;
-    private CustomCharacterController _characterController;
+    private CapturableObject _capturableObject;
     private GameManager _gameManager;
-    private Vector3 _lastGooPosition;
 
-    private bool _gooMode;
-
+    public bool GooMode { get; private set; }
     public int Score { get; private set; }
+    public int Health { get; private set; }
+    public bool Enemy { get; set; }
+    public string Name { get; private set; }
 
     private void Start()
     {
         _gameManager = FindObjectOfType<GameManager>();
         _gooController = GetComponentInParent<GooController>();
 
+        InitHealth();
+        InitUI();
         SetToGoo();
     }
 
     private void Update()
     {
         trigger.transform.rotation = Quaternion.identity;
+
+        if (GooMode && _gooController)
+            UIObject.transform.position = _gooController.transform.position + _gooController.UIOffset;
+        else if (_capturableObject)
+            UIObject.transform.position = _capturableObject.transform.position + _capturableObject.UIOffset;
+    }
+
+    private void InitHealth()
+    {
+        Health = maxHealth;
+        healthbar.maxValue = maxHealth;
+    }
+
+    private void InitUI()
+    {
+        UIObject.transform.SetParent(null);
+        UpdateUI();
     }
 
     public void AddScore(int count = 1)
@@ -33,59 +62,98 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         Score += count;
     }
 
+    public void Damage(int amount = 1)
+    {
+        Health -= amount;
+        UpdateUI();
+
+        if (Health <= 0)
+            Die();
+    }
+
+    private void ResetHealth()
+    {
+        Health = maxHealth;
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        healthbar.value = Health;
+        nameText.text = Name;
+    }
+
+    public void SetName(string name)
+    {
+        Name = name;
+        UpdateUI();
+    }
+
     public void Movement(Vector3 vector3)
     {
-        if (_gooMode)
+        if (GooMode)
             _gooController.Movement(vector3);
         else
-            _characterController.Movement(vector3);
+            _capturableObject.Movement(vector3);
     }
 
     public void SetToGoo()
     {
-        _gooMode = true;
+        GooMode = true;
 
-        if(_characterController)
+        if (_capturableObject)
         {
-            _gooController.transform.SetParent(null);
-            _gooController.EnableColliders();
-            _gooController.gameObject.SetActive(true);
-            _gooController.transform.position = _lastGooPosition;
-            _gameManager.UpdateCameraFollower();
-            transform.SetParent(_characterController.transform);
-            transform.localPosition = Vector3.zero;
-            
-            // Instantiate ragdoll
-            var ragdoll = Instantiate(_characterController.ragdoll, _characterController.transform.position, _characterController.transform.rotation, null);
-            var ragdollSkin = ragdoll.GetComponentInChildren<SkinnedMeshRenderer>();
-            var ragdollMats = ragdollSkin.sharedMaterials;
-            foreach (var mat in ragdollMats)
-                mat.SetColor("_BaseColor", _characterController.normalColor);
-            ragdollSkin.materials = ragdollMats;
+            _gooController.LeaveBody();
 
-            Destroy(_characterController.gameObject);
+            _gameManager.UpdateCameraFollower();
+            transform.SetParent(_capturableObject.transform);
+            transform.localPosition = Vector3.zero;
+
+            _capturableObject.LeaveObject();
+            _capturableObject = null;
+            UpdateUI();
+            ResetHealth();
         }
     }
 
     public void GetIntoCharacter(CustomCharacterController character)
     {
-        _characterController = character;
-        _gooMode = false;
+        _capturableObject = character;
+
+        if (!_capturableObject.Capturable())
+            return;
+
+        GooMode = false;
         _gameManager.UpdateCameraFollower();
-        transform.SetParent(_characterController.transform);
+        transform.SetParent(_capturableObject.transform);
         transform.localPosition = Vector3.zero;
         _gameManager.EnterToCharacter();
-        _characterController.Capture(gooColor);
+        _capturableObject.Capture(this, gooColor);
+        ResetHealth();
 
-        _lastGooPosition = _gooController.transform.position;
-        _gooController.MoveToBody(_characterController.gooEnterance.transform.position, _characterController.gooEnterance.transform);
+        _gooController.MoveToBody(_capturableObject.venomEntrance.transform.position, _capturableObject.venomEntrance.transform);
+        UpdateUI();
+    }
+
+    private void Die()
+    {
+        if (!GooMode)
+            SetToGoo();
+
+        Destroy(UIObject.gameObject);
+        Destroy(_gooController.gameObject);
+
+        if (!Enemy)
+        {
+            // TODO: some player stuff
+        }
     }
 
     public Transform GetCameraTarget()
     {
-        if (_gooMode)
+        if (GooMode)
             return _gooController.transform;
 
-        return _characterController.transform;
+        return _capturableObject.transform;
     }
 }

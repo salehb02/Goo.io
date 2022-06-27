@@ -937,8 +937,8 @@ MonoBehaviour:
   - {fileID: 1836047909301170754, guid: 2dbd13c165c36ba46ad8bfd579c36051, type: 3}
   - {fileID: 9037683448918806118, guid: b3ab9e98d7fe04e42b882beb782a8cfb, type: 3}
   spawnPointOrigin: {fileID: 1238892160}
-  horizontalRandomPositionRange: {x: -10, y: 10}
-  verticalRandomPositionRange: {x: -10, y: 10}
+  horizontalRandomPositionRange: {x: -20, y: 20}
+  verticalRandomPositionRange: {x: -20, y: 20}
   capturableObjectsCount: 10
 --- !u!4 &1238892162
 Transform:

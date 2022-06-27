@@ -20,7 +20,7 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
 
     public bool GooMode { get; private set; }
     public int Score { get; private set; }
-    public int Health { get; private set; }
+    public float Health { get; private set; }
     public bool Enemy { get; set; }
     public string Name { get; private set; }
 
@@ -59,13 +59,18 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         Score += count;
     }
 
-    public void Damage(int amount = 1)
+    public bool Damage(float amount = 1)
     {
         Health -= amount;
         UpdateUI();
 
         if (Health <= 0)
+        {
             Die();
+            return true;
+        }
+
+        return false;
     }
 
     private void ResetHealth()

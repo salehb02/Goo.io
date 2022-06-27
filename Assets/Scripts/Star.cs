@@ -28,6 +28,7 @@ public class Star : MonoBehaviour
             if (player)
             {
                 player.AddScore();
+                AudioManager.Instance.StarPickupSFX();
                 Destroy(gameObject);
             }
         }

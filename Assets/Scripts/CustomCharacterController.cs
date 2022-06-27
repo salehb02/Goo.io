@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CustomCharacterController : CapturableObject
 {
+    public enum WeaponAnimationType { Pistol = 1, Rifle = 2, SMG = 3 }
+
     [Space(4)]
     [Header("Object Specific Settings")]
     public float speed = 2f;
@@ -13,12 +15,13 @@ public class CustomCharacterController : CapturableObject
 
     [Space(2)]
     [Header("Combat")]
+    public WeaponAnimationType weaponAnimationType;
     public GameObject weaponModel;
     public GameObject muzzlePoint;
     public GameObject muzzlePrefab;
     public float shootDistance = 5f;
     public LayerMask enemyLayers;
-    public int shootPower = 1;
+    public float shootPower = 1;
     public float shootAnimationLength;
     [Space(2)]
     public AudioSource gunSFX;
@@ -60,7 +63,7 @@ public class CustomCharacterController : CapturableObject
         _animator.SetFloat(MOVEMENT_SPEED, SmoothedDirection.magnitude);
 
         // Set animator weapon blend
-        smoothCombatMode = Mathf.Lerp(smoothCombatMode, combatMode ? 1 : 0, Time.deltaTime * 5f);
+        smoothCombatMode = Mathf.Lerp(smoothCombatMode, combatMode ? (int)weaponAnimationType : 0, Time.deltaTime * 5f);
         _animator.SetFloat(WEAPON_BLEND, smoothCombatMode);
 
         // Combat mode
@@ -133,7 +136,13 @@ public class CustomCharacterController : CapturableObject
         yield return new WaitForSeconds(0.2f);
 
         _currentMuzzle?.Play();
-        _target?.Damage(shootPower);
+        var died = _target?.Damage(shootPower);
+        if (died.HasValue && died.Value)
+        {
+            _target = null;
+            _overrideRotation = false;
+        }
+
         gunSFX.PlayOneShot(gunShotClips[Random.Range(0, gunShotClips.Length)]);
 
         yield return new WaitForSeconds(0.2f);

@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - FxTemporaire
+  - Character
+  - Venom
   layers:
   - Default
   - TransparentFX

@@ -93,13 +93,10 @@ public class CustomCharacterController : CapturableObject
 
             foreach (var col in colliders.ToList())
             {
-                var parent = col.transform.parent;
-                PlayerData player = null;
-
-                if (!parent)
+                if (!col.CompareTag("Venom"))
                     continue;
 
-                player = col.transform.parent.GetComponentInChildren<PlayerData>();
+                var player = col.GetComponentInChildren<PlayerData>();
 
                 if (!player || !player.Enemy)
                     continue;
@@ -136,7 +133,7 @@ public class CustomCharacterController : CapturableObject
         yield return new WaitForSeconds(0.2f);
 
         _currentMuzzle?.Play();
-        _target.Damage(shootPower);
+        _target?.Damage(shootPower);
         gunSFX.PlayOneShot(gunShotClips[Random.Range(0, gunShotClips.Length)]);
 
         yield return new WaitForSeconds(0.2f);
@@ -149,10 +146,9 @@ public class CustomCharacterController : CapturableObject
 
     private void SetSkinColor(Color color)
     {
-        var mats = skinnedMesh.sharedMaterials;
-        foreach (var mat in mats)
-            mat.SetColor("_BaseColor", color);
-        skinnedMesh.materials = mats;
+        var mat = new Material(skinnedMesh.sharedMaterial);
+        mat.SetColor("_BaseColor", color);
+        skinnedMesh.material = mat;
     }
 
     public void Damage(int amount = 1)

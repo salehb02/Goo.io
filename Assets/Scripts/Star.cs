@@ -21,12 +21,15 @@ public class Star : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var player = other.GetComponentInParent<PlayerData>();
-
-        if (player)
+        if (other.CompareTag("Venom") || other.CompareTag("Character"))
         {
-            player.AddScore();
-            Destroy(gameObject);
+            var player = other.GetComponentInChildren<PlayerData>();
+
+            if (player)
+            {
+                player.AddScore();
+                Destroy(gameObject);
+            }
         }
     }
 }

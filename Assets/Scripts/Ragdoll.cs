@@ -9,8 +9,8 @@ public class Ragdoll : MonoBehaviour
         if (skinnedMesh == null)
             return;
 
-        var ragdollMats = skinnedMesh.sharedMaterials;
-        foreach (var mat in ragdollMats)
-            mat.SetColor("_BaseColor", color);
+        var mat = new Material(skinnedMesh.sharedMaterial);
+        mat.SetColor("_BaseColor", color);
+        skinnedMesh.material = mat;
     }
 }

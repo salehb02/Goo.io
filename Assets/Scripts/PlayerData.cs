@@ -4,9 +4,8 @@ using TMPro;
 
 public class PlayerData : MonoBehaviour, IJoystickControllable
 {
-    public Collider trigger;
     public Color gooColor;
-
+    public CharacterDetector characterDetector;
     public int maxHealth = 10;
 
     [Space(2)]
@@ -37,8 +36,6 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
 
     private void Update()
     {
-        trigger.transform.rotation = Quaternion.identity;
-
         if (GooMode && _gooController)
             UIObject.transform.position = _gooController.transform.position + _gooController.UIOffset;
         else if (_capturableObject)
@@ -106,13 +103,14 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
             _gooController.LeaveBody();
 
             _gameManager.UpdateCameraFollower();
-            transform.SetParent(_capturableObject.transform);
+            transform.SetParent(_gooController.transform);
             transform.localPosition = Vector3.zero;
 
             _capturableObject.LeaveObject();
             _capturableObject = null;
             UpdateUI();
             ResetHealth();
+            characterDetector.gameObject.SetActive(true);
         }
     }
 
@@ -133,6 +131,7 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
 
         _gooController.MoveToBody(_capturableObject.venomEntrance.transform.position, _capturableObject.venomEntrance.transform);
         UpdateUI();
+        characterDetector.gameObject.SetActive(false);
     }
 
     private void Die()

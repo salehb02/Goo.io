@@ -11,11 +11,12 @@ public class CharacterDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.CompareTag("Character"))
+            return;
+
         var controller = other.GetComponent<CustomCharacterController>();
 
         if (controller)
-        {
             _playerData.GetIntoCharacter(controller);
-        }
     }
 }

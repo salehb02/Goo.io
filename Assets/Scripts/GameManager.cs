@@ -7,6 +7,14 @@ public class GameManager : MonoBehaviour
     public PlayerData[] players;
     public string[] nicknames;
 
+    [Space(2)]
+    [Header("Captuables Objects")]
+    public CapturableObject[] capturablesObjects;
+    public GameObject spawnPointOrigin;
+    public Vector2 horizontalRandomPositionRange;
+    public Vector2 verticalRandomPositionRange;
+    public int capturableObjectsCount = 10;
+
     private IJoystickControllable _currentControllable;
     private CameraFollower _camera;
     private GameManagerPresentor _presentor;
@@ -20,6 +28,7 @@ public class GameManager : MonoBehaviour
         _camera = FindObjectOfType<CameraFollower>();
         _presentor = GetComponent<GameManagerPresentor>();
 
+        SpawnCapturables();
         UpdateCameraFollower();
         GetPlayers();
         ExitToGoo();
@@ -61,5 +70,14 @@ public class GameManager : MonoBehaviour
     {
         _presentor.SetExitToGooActivation(false);
         Player.SetToGoo();
+    }
+
+    private void SpawnCapturables()
+    {
+        for (int i = 0; i < capturableObjectsCount; i++)
+        {
+            Instantiate(capturablesObjects[Random.Range(0, capturablesObjects.Length)]
+                , spawnPointOrigin.transform.position + new Vector3(Random.Range(horizontalRandomPositionRange.x, horizontalRandomPositionRange.y), 0, Random.Range(verticalRandomPositionRange.x, verticalRandomPositionRange.y)), Quaternion.identity, transform);
+        }
     }
 }

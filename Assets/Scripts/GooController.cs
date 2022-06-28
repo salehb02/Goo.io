@@ -7,6 +7,9 @@ public class GooController : MonoBehaviour
     public float jumpForce = 1;
     public Vector3 UIOffset;
 
+    public Renderer renderer;
+    public ParticleSystem trailParticle;
+
     private Vector3 _direction;
     private Vector3 _currentDirection;
     private Rigidbody _rigid;
@@ -72,5 +75,17 @@ public class GooController : MonoBehaviour
     {
         foreach (var collider in GetComponentsInChildren<Collider>())
             collider.enabled = false;
+    }
+
+    public void SetColor(Color color)
+    {
+        var mat = new Material(renderer.sharedMaterial);
+        mat.SetColor("_BaseColor", color);
+        renderer.material = mat;
+
+        var particleRenderer = trailParticle.GetComponent<Renderer>();
+        var particleMat = new Material(particleRenderer.sharedMaterial);
+        particleMat.SetColor("_BaseColor", color);
+        particleRenderer.material = particleMat;
     }
 }

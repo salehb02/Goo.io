@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
     private GameManagerPresentor _presentor;
 
     public PlayerData Player { get; private set; }
+    public List<CapturableObject> SpawnedCapturables { get; private set; } = new List<CapturableObject>();
 
     private void Start()
     {
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
             if (players[i].Enemy)
             {
                 players[i].SetName(nicknames[Random.Range(0, nicknames.Length)]);
+                players[i].gameObject.AddComponent<AIController>();
             }
         }
     }
@@ -76,8 +79,10 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < capturableObjectsCount; i++)
         {
-            Instantiate(capturablesObjects[Random.Range(0, capturablesObjects.Length)]
+            var cap = Instantiate(capturablesObjects[Random.Range(0, capturablesObjects.Length)]
                 , spawnPointOrigin.transform.position + new Vector3(Random.Range(horizontalRandomPositionRange.x, horizontalRandomPositionRange.y), 0, Random.Range(verticalRandomPositionRange.x, verticalRandomPositionRange.y)), Quaternion.identity, transform);
+
+            SpawnedCapturables.Add(cap);
         }
     }
 }

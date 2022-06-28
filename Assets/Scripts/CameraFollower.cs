@@ -8,6 +8,9 @@ public class CameraFollower : MonoBehaviour
 
     private void Update()
     {
+        if (!_target)
+            return;
+
         transform.position = Vector3.Lerp(transform.position, _target.position + offset, smoothness * Time.deltaTime);
         transform.LookAt(_target.transform);
     }

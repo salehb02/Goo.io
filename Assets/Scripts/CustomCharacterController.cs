@@ -27,7 +27,6 @@ public class CustomCharacterController : CapturableObject
     public AudioSource gunSFX;
     public AudioClip[] gunShotClips;
 
-    private PlayerData _target;
     private bool combatMode = false;
     private float smoothCombatMode = 0f;
     private bool _overrideRotation = false;
@@ -41,11 +40,6 @@ public class CustomCharacterController : CapturableObject
 
     private Animator _animator;
     private CharacterController _controller;
-
-    private void Start()
-    {
-        Init();
-    }
 
     private void Update()
     {
@@ -70,8 +64,10 @@ public class CustomCharacterController : CapturableObject
         Combat();
     }
 
-    private void Init()
+    public override void Init()
     {
+        base.Init();
+
         _animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
 
@@ -90,35 +86,35 @@ public class CustomCharacterController : CapturableObject
         if (!combatMode || ControllingBy == null)
             return;
 
-        if (_target == null)
+        if (Target == null)
         {
             var colliders = Physics.OverlapSphere(transform.position, shootDistance, enemyLayers);
 
             foreach (var col in colliders.ToList())
             {
-                if (!col.CompareTag("Venom"))
+                if (!col.CompareTag("Venom") && !col.CompareTag("Character"))
                     continue;
 
                 var player = col.GetComponentInChildren<PlayerData>();
 
-                if (!player || !player.Enemy)
+                if (!player || player == ControllingBy)
                     continue;
 
-                _target = player;
+                Target = player;
             }
 
             return;
         }
 
-        if (Vector3.Distance(transform.position, _target.transform.position) > shootDistance)
+        if (Vector3.Distance(transform.position, Target.transform.position) > shootDistance)
         {
             _overrideRotation = false;
-            _target = null;
+            Target = null;
             return;
         }
 
         _overrideRotation = true;
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_target.transform.position - transform.position), Time.deltaTime * 10f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Target.transform.position - transform.position), Time.deltaTime * 10f);
 
         if (_shootingCoroutine == null)
             _shootingCoroutine = StartCoroutine(ShootCoroutine());
@@ -133,19 +129,19 @@ public class CustomCharacterController : CapturableObject
     private IEnumerator ShootCoroutine()
     {
         _animator.SetTrigger(SHOOT_TRIGGER);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(shootAnimationLength / 5f);
 
         _currentMuzzle?.Play();
-        var died = _target?.Damage(shootPower);
+        var died = Target?.Damage(shootPower);
         if (died.HasValue && died.Value)
         {
-            _target = null;
+            Target = null;
             _overrideRotation = false;
         }
 
         gunSFX.PlayOneShot(gunShotClips[Random.Range(0, gunShotClips.Length)]);
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(shootAnimationLength / 5f);
 
         _currentMuzzle?.Stop();
 

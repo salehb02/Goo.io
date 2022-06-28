@@ -238,6 +238,8 @@ MonoBehaviour:
   speed: 100
   jumpForce: 20
   UIOffset: {x: 0, y: 1.5, z: 0}
+  renderer: {fileID: 3029216531308718105}
+  trailParticle: {fileID: 3029216531836049488}
 --- !u!1 &3029216531836049491
 GameObject:
   m_ObjectHideFlags: 0

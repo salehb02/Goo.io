@@ -29,6 +29,7 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         _gameManager = FindObjectOfType<GameManager>();
         _gooController = GetComponentInParent<GooController>();
 
+        _gooController.SetColor(gooColor);
         InitHealth();
         InitUI();
         SetToGoo();
@@ -130,12 +131,17 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         _gameManager.UpdateCameraFollower();
         transform.SetParent(_capturableObject.transform);
         transform.localPosition = Vector3.zero;
-        _gameManager.EnterToCharacter();
+
+        if (!Enemy)
+        {
+            _gameManager.EnterToCharacter();
+            UpdateUI();
+        }
+
         _capturableObject.Capture(this, gooColor);
         ResetHealth();
 
         _gooController.MoveToBody(_capturableObject.venomEntrance.transform.position, _capturableObject.venomEntrance.transform);
-        UpdateUI();
         characterDetector.gameObject.SetActive(false);
     }
 

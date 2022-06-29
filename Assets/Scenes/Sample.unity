@@ -459,7 +459,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
   offset: {x: 0, y: 10, z: -10}
-  smoothness: 5
+  smoothness: 3.5
+  lookAtSmoothness: 15
 --- !u!1 &499015955
 GameObject:
   m_ObjectHideFlags: 0
@@ -1686,10 +1687,6 @@ PrefabInstance:
     - target: {fileID: 3029216532281080870, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9077787988769076898, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}

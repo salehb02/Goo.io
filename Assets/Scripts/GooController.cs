@@ -3,7 +3,8 @@ using DG.Tweening;
 
 public class GooController : MonoBehaviour
 {
-    public float speed = 10;
+    public float maxSpeed = 10;
+    public float acceleration = 10;
     public float jumpForce = 1;
     public Vector3 UIOffset;
 
@@ -25,7 +26,8 @@ public class GooController : MonoBehaviour
     private void FixedUpdate()
     {
         _currentDirection = Vector3.Lerp(_currentDirection, _direction, Time.deltaTime * 5f);
-        _rigid.AddForce(_currentDirection * speed);
+        if (_rigid.velocity.magnitude < maxSpeed)
+            _rigid.AddForce(_currentDirection * acceleration);
     }
 
     public void Movement(Vector3 vector3, bool force = false)

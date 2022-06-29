@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public FixedJoystick joyStick;
     public PlayerData startPlayer;
-    public PlayerData[] players;
+    public List<PlayerData> players = new List<PlayerData>();
     public string[] nicknames;
 
     [Space(2)]
@@ -50,9 +51,9 @@ public class GameManager : MonoBehaviour
 
     private void GetPlayers()
     {
-        players = FindObjectsOfType<PlayerData>();
+        players = FindObjectsOfType<PlayerData>().ToList();
 
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < players.Count; i++)
         {
             players[i].Enemy = players[i] == Player ? false : true;
 

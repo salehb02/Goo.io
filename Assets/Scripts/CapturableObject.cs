@@ -44,6 +44,8 @@ public class CapturableObject : MonoBehaviour
     public virtual void LeaveObject()
     {
         ControllingBy = null;
+
+        if(GameManager.SpawnedCapturables.Contains(this))
         GameManager.SpawnedCapturables.Remove(this);
     }
 }

@@ -198,11 +198,11 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1566014660572057367}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 74f05f533f7bb9e40976600aa92d49b9, type: 3}
-  m_Controller: {fileID: 9100000, guid: 2ab97719f3382154297d03b763de073e, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 6906d60f9eb2ced4aadade4205485325, type: 3}
+  m_Controller: {fileID: 9100000, guid: 3f840fbb66e70c84ebfac1421d2774ef, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_UpdateMode: 1
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -253,7 +253,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   shootPower: 0.5
-  shootAnimationLength: 0.07
+  shootAnimationLength: 0.1
   gunSFX: {fileID: 4745059285314952913}
   gunShotClips:
   - {fileID: 8300000, guid: 56a6141d3fd147f4e9860371923dad61, type: 3}

@@ -51,17 +51,23 @@ public class CustomCharacterController : CapturableObject
 
         // Rotate transform to direction
         if (SmoothedDirection != Vector3.zero && !_overrideRotation)
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(SmoothedDirection), Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(SmoothedDirection), Time.deltaTime * 30f);
 
         // Set animator movement speed
         _animator.SetFloat(MOVEMENT_SPEED, SmoothedDirection.magnitude);
 
         // Set animator weapon blend
-        smoothCombatMode = Mathf.Lerp(smoothCombatMode, combatMode ? (int)weaponAnimationType : 0, Time.deltaTime * 5f);
+        smoothCombatMode = Mathf.Lerp(smoothCombatMode, (int)weaponAnimationType, Time.deltaTime * 5f);
         _animator.SetFloat(WEAPON_BLEND, smoothCombatMode);
 
         // Combat mode
         Combat();
+
+        if(Input.GetKey(KeyCode.K) && ControllingBy &&  ControllingBy.Enemy == false)
+        {
+            if (_shootingCoroutine == null)
+                _shootingCoroutine = StartCoroutine(ShootCoroutine());
+        }
     }
 
     public override void Init()
@@ -114,7 +120,7 @@ public class CustomCharacterController : CapturableObject
         }
 
         _overrideRotation = true;
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Target.transform.position - transform.position), Time.deltaTime * 10f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Target.transform.position - transform.position), Time.deltaTime * 30f);
 
         if (_shootingCoroutine == null)
             _shootingCoroutine = StartCoroutine(ShootCoroutine());
@@ -129,9 +135,8 @@ public class CustomCharacterController : CapturableObject
     private IEnumerator ShootCoroutine()
     {
         _animator.SetTrigger(SHOOT_TRIGGER);
-        yield return new WaitForSeconds(shootAnimationLength / 5f);
 
-        _currentMuzzle?.Play();
+        PlayMuzzle();
         var died = Target?.Damage(shootPower);
         if (died.HasValue && died.Value)
         {
@@ -141,12 +146,13 @@ public class CustomCharacterController : CapturableObject
 
         gunSFX.PlayOneShot(gunShotClips[Random.Range(0, gunShotClips.Length)]);
 
-        yield return new WaitForSeconds(shootAnimationLength / 5f);
-
-        _currentMuzzle?.Stop();
-
         yield return new WaitForSeconds(shootAnimationLength);
         _shootingCoroutine = null;
+    }
+
+    private void PlayMuzzle()
+    {
+        _currentMuzzle?.Play();
     }
 
     private void SetSkinColor(Color color)

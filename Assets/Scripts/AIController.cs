@@ -4,7 +4,7 @@ public class AIController : MonoBehaviour
 {
     public enum AIStatue { LookingForCapturable, MovingToCapturable, LookingForTarget, MovingToTarget, AttackingTarget, LeaveCapturedBody }
 
-    public Vector2 leaveBodyChance = new Vector2(0.3f, 0.5f);
+    private Vector2 leaveBodyChance = new Vector2(1, 1);
 
     private bool willLeave;
 
@@ -47,7 +47,7 @@ public class AIController : MonoBehaviour
                     else
                         currentStatue = AIStatue.MovingToTarget;
 
-                    if (currentCapturable && playerData.Health < playerData.maxHealth / 4f)
+                    if (currentCapturable && playerData.Health < playerData.maxHealth / 2f)
                     {
                         currentStatue = AIStatue.LeaveCapturedBody;
                     }
@@ -78,7 +78,7 @@ public class AIController : MonoBehaviour
                 return;
             }
 
-            playerData.Movement((currentCapturable.transform.position - transform.position).normalized / 2f);
+            playerData.Movement((currentCapturable.transform.position - transform.position).normalized / 1.2f);
 
             return;
         }
@@ -95,7 +95,7 @@ public class AIController : MonoBehaviour
 
         if (currentStatue == AIStatue.MovingToTarget)
         {
-            playerData.Movement((currentTarget.transform.position - transform.position).normalized / 2f);
+            playerData.Movement((currentTarget.transform.position - transform.position).normalized / 1.2f);
 
             return;
         }
@@ -116,6 +116,7 @@ public class AIController : MonoBehaviour
             {
                 currentCapturable.LeaveObject();
                 currentCapturable = null;
+                playerData.SetToGoo();
                 CalculateLeaveChance();
             }
 
@@ -171,8 +172,11 @@ public class AIController : MonoBehaviour
 
     private void CalculateLeaveChance()
     {
-        if (Random.value < Random.Range(leaveBodyChance.x, leaveBodyChance.y))
+        if (Random.value <= Random.Range(leaveBodyChance.x, leaveBodyChance.y))
+        {
             willLeave = true;
+            return;
+        }
 
         willLeave = false;
     }

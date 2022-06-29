@@ -150,6 +150,9 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         if (!GooMode)
             SetToGoo();
 
+        if (_gameManager.players.Contains(this))
+            _gameManager.players.Remove(this);
+
         Destroy(UIObject.gameObject);
         Destroy(_gooController.gameObject);
 

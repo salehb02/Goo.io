@@ -57,9 +57,10 @@ public class GameManager : MonoBehaviour
         {
             players[i].Enemy = players[i] == Player ? false : true;
 
+            players[i].SetName(nicknames[Random.Range(0, nicknames.Length)]);
+
             if (players[i].Enemy)
             {
-                players[i].SetName(nicknames[Random.Range(0, nicknames.Length)]);
                 players[i].gameObject.AddComponent<AIController>();
             }
         }

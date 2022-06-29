@@ -307,15 +307,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531829221858, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.386
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531829221858, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531829221858, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.386
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216532281080870, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -544,8 +544,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 117.38, y: 329.6}
-  m_SizeDelta: {x: 128, y: 128}
+  m_AnchoredPosition: {x: 117.380005, y: 329.6}
+  m_SizeDelta: {x: 150.5617, y: 150.5617}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &569339101
 MonoBehaviour:
@@ -902,15 +902,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531829221858, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.386
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531829221858, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531829221858, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.386
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216532281080870, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1106,15 +1106,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531829221858, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.386
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531829221858, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531829221858, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.386
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216532281080870, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1297,15 +1297,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.6666667
+      value: 0.88273335
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.6666667
+      value: 0.88273335
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.6666667
+      value: 0.88273335
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1493,8 +1493,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -84.2}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: -110}
+  m_SizeDelta: {x: 200, y: 102.1205}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1971450702
 MonoBehaviour:
@@ -1518,8 +1518,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
-  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f9bcb3e99fa9201458c6546afd4e902e, type: 2}
+  m_sharedMaterial: {fileID: -5213902247594767410, guid: f9bcb3e99fa9201458c6546afd4e902e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1543,8 +1543,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 65
-  m_fontSizeBase: 65
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

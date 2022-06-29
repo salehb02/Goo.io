@@ -14,10 +14,12 @@ public class GooController : MonoBehaviour
     private Vector3 _currentDirection;
     private Rigidbody _rigid;
     private Vector3 _lastSavedPos;
+    private Vector3 _initSize;
 
     private void Start()
     {
         _rigid = GetComponent<Rigidbody>();
+        _initSize = transform.localScale;
     }
 
     private void FixedUpdate()
@@ -40,15 +42,18 @@ public class GooController : MonoBehaviour
         transform.SetParent(parentOnDone);
         SaveLastPositon(transform.localPosition);
 
-        _rigid.DOMove(pos, 0.2f).OnComplete(() =>
+        _rigid.DOMove(pos, 0.7f).OnComplete(() =>
         {
             gameObject.SetActive(false);
             Movement(Vector3.zero, true);
         });
+
+        transform.DOScale(Vector3.zero, 0.7f);
     }
 
     public void LeaveBody()
     {
+        transform.DOScale(_initSize, 0);
         LoadLastPosition();
         transform.SetParent(null);
         gameObject.SetActive(true);

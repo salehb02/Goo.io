@@ -152,7 +152,11 @@ public class CustomCharacterController : CapturableObject
 
     private void PlayMuzzle()
     {
-        _currentMuzzle?.Play();
+        if (!_currentMuzzle)
+            return;
+
+        if (_currentMuzzle.isStopped)
+            _currentMuzzle.Play();
     }
 
     private void SetSkinColor(Color color)

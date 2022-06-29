@@ -240,7 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   venomEntrance: {fileID: 1836047909643253628}
   UIOffset: {x: 0, y: 2.5, z: 0}
-  speed: 8
+  speed: 11
   ragdoll: {fileID: 7425268794954986829, guid: b4947cd4aebee0d4cb9ebca4aee5b841, type: 3}
   skinnedMesh: {fileID: 6936871155512366157}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -253,7 +253,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   shootPower: 0.5
-  shootAnimationLength: 0.1
+  shootAnimationLength: 0.07
   gunSFX: {fileID: 4745059285314952913}
   gunShotClips:
   - {fileID: 8300000, guid: 56a6141d3fd147f4e9860371923dad61, type: 3}

@@ -37,6 +37,11 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
 
     private void Update()
     {
+        transform.localScale = Vector3.one;
+
+        if (!UIObject)
+            return;
+
         if (GooMode && _gooController)
             UIObject.transform.position = _gooController.transform.position + _gooController.UIOffset;
         else if (_capturableObject)
@@ -164,9 +169,12 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
 
     public Transform GetCameraTarget()
     {
-        if (GooMode)
+        if (_gooController && GooMode)
             return _gooController.transform;
 
-        return _capturableObject.transform;
+        if (_capturableObject)
+            return _capturableObject.transform;
+
+        return null;
     }
 }

@@ -4,7 +4,7 @@ public class AIController : MonoBehaviour
 {
     public enum AIStatue { LookingForCapturable, MovingToCapturable, LookingForTarget, MovingToTarget, AttackingTarget, LeaveCapturedBody }
 
-    private Vector2 leaveBodyChance = new Vector2(1, 1);
+    private Vector2 leaveBodyChance = new Vector2(0.6f,0.85f);
 
     private bool willLeave;
 
@@ -47,7 +47,7 @@ public class AIController : MonoBehaviour
                     else
                         currentStatue = AIStatue.MovingToTarget;
 
-                    if (currentCapturable && playerData.Health < playerData.maxHealth / 2f)
+                    if (currentCapturable && playerData.Health < playerData.maxHealth / 3f)
                     {
                         currentStatue = AIStatue.LeaveCapturedBody;
                     }
@@ -114,8 +114,9 @@ public class AIController : MonoBehaviour
 
             if (currentCapturable.ControllingBy == playerData)
             {
-                currentCapturable.LeaveObject();
+                //currentCapturable.LeaveObject();
                 currentCapturable = null;
+                currentTarget = null;
                 playerData.SetToGoo();
                 CalculateLeaveChance();
             }

@@ -12,7 +12,9 @@ public class CameraFollower : MonoBehaviour
             return;
 
         transform.position = Vector3.Lerp(transform.position, _target.position + offset, smoothness * Time.deltaTime);
-        transform.LookAt(_target.transform);
+
+        var targetDirection = _target.transform.position - transform.position;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetDirection), Time.deltaTime * smoothness *3);
     }
 
     public void SetTarget(Transform target)

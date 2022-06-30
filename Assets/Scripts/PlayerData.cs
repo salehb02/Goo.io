@@ -176,7 +176,8 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
 
         if (!Enemy)
         {
-            // TODO: some player stuff
+            _gameManager.ShowLosePanel();
+            _gameManager.Player = null;
         }
     }
 

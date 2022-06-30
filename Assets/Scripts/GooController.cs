@@ -9,7 +9,7 @@ public class GooController : MonoBehaviour
     public float jumpForce = 1;
     public Vector3 UIOffset;
 
-    public Renderer renderer;
+    public new Renderer renderer;
     public ParticleSystem trailParticle;
 
     private Vector3 _direction;

@@ -7,10 +7,21 @@ public class ControlPanel : ScriptableObject
 
     public SFXBank AudioBank;
 
-    [System.Serializable]
+    [Header("Prizes")]
+    public Prize[] prizes;
+    public float addPercentPerLevel = 25f;
+    
     public class SFXBank
     {
         public AudioClip starPickup;
+    }
+
+    [System.Serializable]
+    public class Prize
+    {
+        public string id;
+        public CapturableObject capturable;
+        public Sprite icon;
     }
 
     #region Singleton

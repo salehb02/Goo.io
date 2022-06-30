@@ -3,6 +3,7 @@ using UnityEngine;
 public class CapturableObject : MonoBehaviour
 {
     [Header("Global Settings")]
+    public string Name;
     public GameObject venomEntrance;
     public Vector3 UIOffset;
 
@@ -30,13 +31,16 @@ public class CapturableObject : MonoBehaviour
             SmoothedDirection = direction;
     }
 
-    public virtual void Capture(PlayerData controlBy,PlayerData.CustomShaderColors colors)
+    public virtual void Capture(PlayerData controlBy, PlayerData.CustomShaderColors colors)
     {
         if (!Capturable())
             return;
 
         Movement(Vector3.zero, true);
         ControllingBy = controlBy;
+
+        if (GameManager.SpawnedCapturables.Contains(this))
+            GameManager.SpawnedCapturables.Remove(this);
     }
 
     public bool Capturable() => ControllingBy ? false : true;
@@ -44,8 +48,5 @@ public class CapturableObject : MonoBehaviour
     public virtual void LeaveObject()
     {
         ControllingBy = null;
-
-        if(GameManager.SpawnedCapturables.Contains(this))
-        GameManager.SpawnedCapturables.Remove(this);
     }
 }

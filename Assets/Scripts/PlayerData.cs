@@ -4,9 +4,12 @@ using TMPro;
 
 public class PlayerData : MonoBehaviour, IJoystickControllable
 {
-    public Color gooColor;
     public CharacterDetector characterDetector;
     public int maxHealth = 10;
+
+    [Space(2)]
+    [Header("Coloring")]
+    public CustomShaderColors colors;
 
     [Space(2)]
     [Header("UI")]
@@ -15,21 +18,31 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
     public TextMeshProUGUI nameText;
 
     private GooController _gooController;
-    private CapturableObject _capturableObject;
     private GameManager _gameManager;
 
+    public CapturableObject CapturableObject { get; private set; }
     public bool GooMode { get; private set; }
     public int Score { get; private set; }
     public float Health { get; private set; }
     public bool Enemy { get; set; }
     public string Name { get; private set; }
 
+    [System.Serializable]
+    public class CustomShaderColors
+    {
+        public Color mainColor;
+        public Color goochBright;
+        public Color goochDark;
+        public Color rimBright;
+        public Color rimDark;
+    }
+
     private void Start()
     {
         _gameManager = FindObjectOfType<GameManager>();
         _gooController = GetComponentInParent<GooController>();
 
-        _gooController.SetColor(gooColor);
+        _gooController.SetColor(colors);
         InitHealth();
         InitUI();
         SetToGoo();
@@ -44,8 +57,8 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
 
         if (GooMode && _gooController)
             UIObject.transform.position = _gooController.transform.position + _gooController.UIOffset;
-        else if (_capturableObject)
-            UIObject.transform.position = _capturableObject.transform.position + _capturableObject.UIOffset;
+        else if (CapturableObject)
+            UIObject.transform.position = CapturableObject.transform.position + CapturableObject.UIOffset;
     }
 
     private void InitHealth()
@@ -102,14 +115,14 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         if (GooMode)
             _gooController.Movement(vector3);
         else
-            _capturableObject.Movement(vector3);
+            CapturableObject.Movement(vector3);
     }
 
     public void SetToGoo()
     {
         GooMode = true;
 
-        if (_capturableObject)
+        if (CapturableObject)
         {
             _gooController.LeaveBody();
 
@@ -117,8 +130,8 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
             transform.SetParent(_gooController.transform);
             transform.localPosition = Vector3.zero;
 
-            _capturableObject.LeaveObject();
-            _capturableObject = null;
+            CapturableObject.LeaveObject();
+            CapturableObject = null;
             UpdateUI();
             ResetHealth();
             characterDetector.gameObject.SetActive(true);
@@ -127,14 +140,14 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
 
     public void GetIntoCharacter(CustomCharacterController character)
     {
-        _capturableObject = character;
+        CapturableObject = character;
 
-        if (!_capturableObject.Capturable())
+        if (!CapturableObject.Capturable())
             return;
 
         GooMode = false;
         _gameManager.UpdateCameraFollower();
-        transform.SetParent(_capturableObject.transform);
+        transform.SetParent(CapturableObject.transform);
         transform.localPosition = Vector3.zero;
 
         if (!Enemy)
@@ -143,10 +156,10 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
             UpdateUI();
         }
 
-        _capturableObject.Capture(this, gooColor);
+        CapturableObject.Capture(this, colors);
         ResetHealth();
 
-        _gooController.MoveToBody(_capturableObject.venomEntrance.transform.position, _capturableObject.venomEntrance.transform);
+        _gooController.MoveToBody(CapturableObject.venomEntrance.transform.position, CapturableObject.venomEntrance.transform);
         characterDetector.gameObject.SetActive(false);
     }
 
@@ -172,8 +185,8 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         if (_gooController && GooMode)
             return _gooController.transform;
 
-        if (_capturableObject)
-            return _capturableObject.transform;
+        if (CapturableObject)
+            return CapturableObject.transform;
 
         return null;
     }

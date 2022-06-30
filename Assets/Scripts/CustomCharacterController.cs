@@ -1,17 +1,17 @@
+using MK.Toon;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 
 public class CustomCharacterController : CapturableObject
 {
-    public enum WeaponAnimationType { Pistol = 1, Rifle = 2, SMG = 3 }
+    public enum WeaponAnimationType { Pistol = 1, RifleOrSMG = 2}
 
     [Space(4)]
     [Header("Object Specific Settings")]
     public float speed = 2f;
-    public GameObject ragdoll;
     public SkinnedMeshRenderer skinnedMesh;
-    public Color normalColor;
+    public PlayerData.CustomShaderColors normalColors;
 
     [Space(2)]
     [Header("Combat")]
@@ -26,10 +26,22 @@ public class CustomCharacterController : CapturableObject
     [Space(2)]
     public AudioSource gunSFX;
     public AudioClip[] gunShotClips;
+    public Rigidbody bullet;
+    public float bulletForce;
+    public ParticleSystem hitVFX;
+
+    [Space(2)]
+    [Header("Weapon Icon")]
+    public GameObject weaponIcon;
+    public float rotationSpeed = 1;
+    public float sinusMovementSpeed = 1;
+    public float sinusMaxMovement = 1f;
+    private Vector3 weaponIconInitPos;
 
     private bool combatMode = false;
     private float smoothCombatMode = 0f;
-    private bool _overrideRotation = false;
+    private float smoothFireMode = 0f;
+    public bool OverrideRotation { get; set; } = false;
     private Coroutine _shootingCoroutine;
     private ParticleSystem _currentMuzzle;
 
@@ -37,6 +49,7 @@ public class CustomCharacterController : CapturableObject
     public const string WEAPON_BLEND = "Weapon Blend";
     public const string MOVEMENT_SPEED = "Speed";
     public const string SHOOT_TRIGGER = "Shoot";
+    public const string FIRE_VALUE = "Fire";
 
     private Animator _animator;
     private CharacterController _controller;
@@ -50,23 +63,36 @@ public class CustomCharacterController : CapturableObject
         _controller.SimpleMove(SmoothedDirection * speed);
 
         // Rotate transform to direction
-        if (SmoothedDirection != Vector3.zero && !_overrideRotation)
+        if (SmoothedDirection != Vector3.zero && !OverrideRotation)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(SmoothedDirection), Time.deltaTime * 30f);
 
         // Set animator movement speed
         _animator.SetFloat(MOVEMENT_SPEED, SmoothedDirection.magnitude);
 
         // Set animator weapon blend
-        smoothCombatMode = Mathf.Lerp(smoothCombatMode, (int)weaponAnimationType, Time.deltaTime * 5f);
+        smoothCombatMode = Mathf.Lerp(smoothCombatMode, !combatMode ? 0 : (int)weaponAnimationType, Time.deltaTime * 5f);
         _animator.SetFloat(WEAPON_BLEND, smoothCombatMode);
+
+        // Set animator weapon fire ready
+            smoothFireMode = Mathf.Lerp(smoothFireMode, combatMode && Target ?  1 : 0, Time.deltaTime * 5f);
+        _animator.SetFloat(FIRE_VALUE, smoothFireMode);
 
         // Combat mode
         Combat();
 
-        if(Input.GetKey(KeyCode.K) && ControllingBy &&  ControllingBy.Enemy == false)
+        if (Input.GetKey(KeyCode.K) && ControllingBy && ControllingBy.Enemy == false)
         {
             if (_shootingCoroutine == null)
                 _shootingCoroutine = StartCoroutine(ShootCoroutine());
+
+            _animator.SetLayerWeight(1, 1);
+        }
+
+            // Weapon icon rotation
+            if (weaponIcon)
+        {
+            weaponIcon.transform.Rotate(Vector3.up * rotationSpeed);
+            weaponIcon.transform.position = weaponIconInitPos + (Vector3.up * Mathf.Sin(sinusMovementSpeed * Time.time) * sinusMaxMovement);
         }
     }
 
@@ -77,14 +103,18 @@ public class CustomCharacterController : CapturableObject
         _animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
 
-        SetSkinColor(normalColor);
+        if (weaponIcon)
+            weaponIconInitPos = weaponIcon.transform.position;
+
+        DisableRagdoll();
+        SetSkinColor(normalColors);
 
         combatMode = false;
-        _overrideRotation = false;
-        _animator.SetLayerWeight(1, 0);
+        OverrideRotation = false;
+        weaponModel.gameObject.SetActive(false);
 
         if (muzzlePrefab)
-            _currentMuzzle = Instantiate(muzzlePrefab, muzzlePoint.transform.position, muzzlePoint.transform.rotation, muzzlePoint.transform).GetComponent<ParticleSystem>();
+            _currentMuzzle = Instantiate(muzzlePrefab, muzzlePoint.transform.position, muzzlePoint.transform.rotation * Quaternion.Euler(0, 180, 0), muzzlePoint.transform).GetComponent<ParticleSystem>();
     }
 
     private void Combat()
@@ -114,13 +144,16 @@ public class CustomCharacterController : CapturableObject
 
         if (Vector3.Distance(transform.position, Target.transform.position) > shootDistance)
         {
-            _overrideRotation = false;
+            OverrideRotation = false;
             Target = null;
             return;
         }
 
-        _overrideRotation = true;
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Target.transform.position - transform.position), Time.deltaTime * 30f);
+        OverrideRotation = true;
+
+        var targetPosition = Target.transform.position;
+        targetPosition.y = transform.position.y;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetPosition - transform.position), Time.deltaTime * 30f);
 
         if (_shootingCoroutine == null)
             _shootingCoroutine = StartCoroutine(ShootCoroutine());
@@ -129,7 +162,6 @@ public class CustomCharacterController : CapturableObject
     private void EnterCombatMode()
     {
         combatMode = true;
-        _animator.SetLayerWeight(1, 1);
     }
 
     private IEnumerator ShootCoroutine()
@@ -137,12 +169,18 @@ public class CustomCharacterController : CapturableObject
         _animator.SetTrigger(SHOOT_TRIGGER);
 
         PlayMuzzle();
-        var died = Target?.Damage(shootPower);
-        if (died.HasValue && died.Value)
-        {
-            Target = null;
-            _overrideRotation = false;
-        }
+        //var bltRigid = Instantiate(this.bullet, muzzlePoint.transform.position, transform.rotation * Quaternion.Euler(90,0,0), null);
+
+        var target = Target.GooMode ? Target.transform.position : Target.CapturableObject.venomEntrance.transform.position;
+        var bltRigid = Instantiate(this.bullet, muzzlePoint.transform.position, Quaternion.LookRotation(target - muzzlePoint.transform.position), null);
+        bltRigid.AddForce(bltRigid.transform.forward * bulletForce);
+
+        var bullet = bltRigid.GetComponent<Bullet>();
+        bullet.hitVFX = hitVFX;
+        bullet.power = shootPower;
+        bullet.characterController = this;
+        
+        Destroy(bltRigid.gameObject, 10f);
 
         gunSFX.PlayOneShot(gunShotClips[Random.Range(0, gunShotClips.Length)]);
 
@@ -159,10 +197,14 @@ public class CustomCharacterController : CapturableObject
             _currentMuzzle.Play();
     }
 
-    private void SetSkinColor(Color color)
+    private void SetSkinColor(PlayerData.CustomShaderColors colors)
     {
         var mat = new Material(skinnedMesh.sharedMaterial);
-        mat.SetColor("_BaseColor", color);
+        Properties.albedoColor.SetValue(mat, colors. mainColor);
+        Properties.goochBrightColor.SetValue(mat, colors.goochBright);
+        Properties.goochDarkColor.SetValue(mat, colors.goochDark);
+        Properties.rimBrightColor.SetValue(mat, colors.rimBright);
+        Properties.rimDarkColor.SetValue(mat, colors.rimDark);
         skinnedMesh.material = mat;
     }
 
@@ -171,21 +213,53 @@ public class CustomCharacterController : CapturableObject
         ControllingBy.Damage(amount);
     }
 
-    public override void Capture(PlayerData controlBy, Color color)
+    public override void Capture(PlayerData controlBy, PlayerData.CustomShaderColors colors)
     {
-        base.Capture(controlBy, color);
+        base.Capture(controlBy, colors);
 
-        SetSkinColor(color);
+        SetSkinColor(colors);
         EnterCombatMode();
+        weaponModel.gameObject.SetActive(true);
+
+        if (weaponIcon)
+            weaponIcon.gameObject.SetActive(false);
     }
 
     public override void LeaveObject()
     {
         base.LeaveObject();
 
-        var ragdoll = Instantiate(this.ragdoll, transform.position, transform.rotation, null).GetComponent<Ragdoll>();
-        ragdoll.SetColor(normalColor);
+        SetSkinColor(normalColors);
+        EnableRagdoll();
+    }
 
-        Destroy(gameObject);
+    public void DisableRagdoll()
+    {
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            if (collider == _controller)
+                continue;
+
+            collider.enabled = false;
+        }
+
+        foreach (var rigid in GetComponentsInChildren<Rigidbody>())
+            rigid.isKinematic = true;
+    }
+
+    public void EnableRagdoll()
+    {
+        Destroy(_animator);
+        Destroy(_controller);
+        Destroy(_currentMuzzle.gameObject);
+        Destroy(gunSFX.gameObject);
+
+        foreach (var collider in GetComponentsInChildren<Collider>())
+            collider.enabled = true;
+
+        foreach (var rigid in GetComponentsInChildren<Rigidbody>())
+            rigid.isKinematic = false;
+
+        Destroy(this);
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using MK.Toon;
 
 public class GooController : MonoBehaviour
 {
@@ -84,15 +85,19 @@ public class GooController : MonoBehaviour
             collider.enabled = false;
     }
 
-    public void SetColor(Color color)
+    public void SetColor(PlayerData.CustomShaderColors colors)
     {
         var mat = new Material(renderer.sharedMaterial);
-        mat.SetColor("_BaseColor", color);
+        Properties.albedoColor.SetValue(mat, colors.mainColor);
+        Properties.goochBrightColor.SetValue(mat, colors.goochBright);
+        Properties.goochDarkColor.SetValue(mat, colors.goochDark);
+        Properties.rimBrightColor.SetValue(mat, colors.rimBright);
+        Properties.rimDarkColor.SetValue(mat, colors.rimDark);
         renderer.material = mat;
 
         var particleRenderer = trailParticle.GetComponent<Renderer>();
         var particleMat = new Material(particleRenderer.sharedMaterial);
-        particleMat.SetColor("_BaseColor", color);
+        particleMat.SetColor("_BaseColor", colors.mainColor);
         particleRenderer.material = particleMat;
     }
 }

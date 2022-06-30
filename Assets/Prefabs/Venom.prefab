@@ -101,9 +101,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdb28535f1b23f040a54b7705be275bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gooColor: {r: 0, g: 0, b: 0, a: 1}
   characterDetector: {fileID: 454257041}
   maxHealth: 25
+  colors:
+    mainColor: {r: 1, g: 0.3647059, b: 0, a: 1}
+    goochBright: {r: 1, g: 1, b: 1, a: 1}
+    goochDark: {r: 0.4509804, g: 0.4509804, b: 0.4509804, a: 1}
+    rimBright: {r: 1, g: 0.29411766, b: 0, a: 0.65882355}
+    rimDark: {r: 0.65882355, g: 0.19607843, b: 0, a: 0.65882355}
   UIObject: {fileID: 3029216531438939284}
   healthbar: {fileID: 3029216531322403147}
   nameText: {fileID: 3029216531998752904}

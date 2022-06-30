@@ -30,7 +30,7 @@ public class CapturableObject : MonoBehaviour
             SmoothedDirection = direction;
     }
 
-    public virtual void Capture(PlayerData controlBy, Color venomColor)
+    public virtual void Capture(PlayerData controlBy,PlayerData.CustomShaderColors colors)
     {
         if (!Capturable())
             return;

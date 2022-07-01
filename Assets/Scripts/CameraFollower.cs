@@ -7,7 +7,7 @@ public class CameraFollower : MonoBehaviour
     public float smoothness = 5f;
     public float lookAtSmoothness = 10f;
 
-    private void Update()
+    private void LateUpdate()
     {
         if (!_target)
             return;

@@ -11,12 +11,14 @@ public class AIController : MonoBehaviour
     private PlayerData playerData;
     private AIStatue currentStatue;
     private CapturableObject currentCapturable;
+    private GooController currentGoo;
     private PlayerData currentTarget;
     private GameManager gameManager;
 
     private void Start()
     {
         playerData = GetComponent<PlayerData>();
+        currentGoo = playerData.GetComponentInParent<GooController>();
         gameManager = FindObjectOfType<GameManager>();
 
         CalculateLeaveChance();
@@ -24,6 +26,9 @@ public class AIController : MonoBehaviour
 
     private void Update()
     {
+        if(enabled && currentGoo.AIPath.enabled == false)
+            currentGoo.AIPath.enabled = true;
+
         if (currentCapturable == null)
         {
             currentStatue = AIStatue.LookingForCapturable;
@@ -47,7 +52,7 @@ public class AIController : MonoBehaviour
                     else
                         currentStatue = AIStatue.MovingToTarget;
 
-                    if (currentCapturable && playerData.Health < playerData.maxHealth / 3f)
+                    if (currentCapturable && playerData.Health < playerData.maxHealth / 3f && willLeave && gameManager.SpawnedCapturables.Count > 0)
                     {
                         currentStatue = AIStatue.LeaveCapturedBody;
                     }
@@ -78,7 +83,8 @@ public class AIController : MonoBehaviour
                 return;
             }
 
-            playerData.Movement((currentCapturable.transform.position - transform.position).normalized / 1.2f);
+            currentGoo.AIDestination = currentCapturable.transform.position;
+            //playerData.Movement((currentCapturable.transform.position - transform.position).normalized / 1.2f);
 
             return;
         }
@@ -95,14 +101,15 @@ public class AIController : MonoBehaviour
 
         if (currentStatue == AIStatue.MovingToTarget)
         {
-            playerData.Movement((currentTarget.transform.position - transform.position).normalized / 1.2f);
+            currentCapturable.AIDestination = currentTarget.transform.position;
+            //playerData.Movement((currentTarget.transform.position - transform.position).normalized / 1.2f);
 
             return;
         }
 
         if (currentStatue == AIStatue.AttackingTarget)
         {
-            playerData.Movement(Vector3.zero);
+            //playerData.Movement(Vector3.zero);
 
             return;
         }

@@ -12,6 +12,8 @@ public class CapturableObject : MonoBehaviour
     public PlayerData ControllingBy { get; set; }
     public GameManager GameManager { get; private set; }
     public PlayerData Target { get; set; }
+    public Vector3 AIDestination { get; set; }
+
 
     private void Start()
     {

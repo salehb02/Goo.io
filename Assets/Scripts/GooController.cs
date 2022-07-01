@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using MK.Toon;
+using Pathfinding;
 
 public class GooController : MonoBehaviour
 {
@@ -18,17 +19,36 @@ public class GooController : MonoBehaviour
     private Vector3 _lastSavedPos;
     private Vector3 _initSize;
 
+    public PlayerData ControlBy { get; set; }
+    public Vector3 AIDestination { get; set; }
+    private AIPath _aiPath;
+    public AIPath AIPath { get { return _aiPath == null ? _aiPath = GetComponent<AIPath>() : _aiPath; } set { } }
+
     private void Start()
     {
         _rigid = GetComponent<Rigidbody>();
+
+        if (AIPath)
+            AIPath.enabled = false;
         _initSize = transform.localScale;
     }
 
     private void FixedUpdate()
     {
-        _currentDirection = Vector3.Lerp(_currentDirection, _direction, Time.deltaTime * 5f);
-        if (_rigid.velocity.magnitude < maxSpeed)
-            _rigid.AddForce(_currentDirection * acceleration);
+        if (!AIPath || AIPath.enabled == false)
+        {
+            _currentDirection = Vector3.Lerp(_currentDirection, _direction, Time.deltaTime * 5f);
+            if (_rigid.velocity.magnitude < maxSpeed)
+                _rigid.AddForce(_currentDirection * acceleration);
+        }
+    }
+
+    private void Update()
+    {
+        if (AIPath && AIPath.enabled == true)
+        {
+            AIPath.destination = AIDestination;
+        }
     }
 
     public void Movement(Vector3 vector3, bool force = false)

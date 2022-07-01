@@ -2,6 +2,7 @@ using MK.Toon;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using Pathfinding;
 
 public class CustomCharacterController : CapturableObject
 {
@@ -54,27 +55,38 @@ public class CustomCharacterController : CapturableObject
     private Animator _animator;
     private CharacterController _controller;
 
+    // Pathfinding
+    public AIPath AIPath { get; set; }
+
     private void Update()
     {
-        // Smooth direction
-        SmoothedDirection = Vector3.Lerp(SmoothedDirection, Direction, Time.deltaTime * 5f);
+        if (AIPath.enabled == false)
+        {
+            // Smooth direction
+            SmoothedDirection = Vector3.Lerp(SmoothedDirection, Direction, Time.deltaTime * 5f);
 
-        // Move character
-        _controller.SimpleMove(SmoothedDirection * speed);
+            // Move character
+            _controller.SimpleMove(SmoothedDirection * speed);
 
-        // Rotate transform to direction
-        if (SmoothedDirection != Vector3.zero && !OverrideRotation)
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(SmoothedDirection), Time.deltaTime * 30f);
+            // Rotate transform to direction
+            if (SmoothedDirection != Vector3.zero && !OverrideRotation)
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(SmoothedDirection), Time.deltaTime * 30f);
 
-        // Set animator movement speed
-        _animator.SetFloat(MOVEMENT_SPEED, SmoothedDirection.magnitude);
+            // Set animator movement speed
+            _animator.SetFloat(MOVEMENT_SPEED, SmoothedDirection.magnitude);
+        }
+        else
+        {
+            AIPath.destination = AIDestination;
+            _animator.SetFloat(MOVEMENT_SPEED, AIPath.velocity.magnitude);
+        }
 
         // Set animator weapon blend
         smoothCombatMode = Mathf.Lerp(smoothCombatMode, !combatMode ? 0 : (int)weaponAnimationType, Time.deltaTime * 5f);
         _animator.SetFloat(WEAPON_BLEND, smoothCombatMode);
 
         // Set animator weapon fire ready
-            smoothFireMode = Mathf.Lerp(smoothFireMode, combatMode && Target ?  1 : 0, Time.deltaTime * 5f);
+        smoothFireMode = Mathf.Lerp(smoothFireMode, combatMode && Target ?  1 : 0, Time.deltaTime * 5f);
         _animator.SetFloat(FIRE_VALUE, smoothFireMode);
 
         // Combat mode
@@ -102,6 +114,7 @@ public class CustomCharacterController : CapturableObject
 
         _animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
+        AIPath = GetComponent<AIPath>();
 
         if (weaponIcon)
             weaponIconInitPos = weaponIcon.transform.position;
@@ -112,6 +125,7 @@ public class CustomCharacterController : CapturableObject
         combatMode = false;
         OverrideRotation = false;
         weaponModel.gameObject.SetActive(false);
+        AIPath.enabled = false;
 
         if (muzzlePrefab)
             _currentMuzzle = Instantiate(muzzlePrefab, muzzlePoint.transform.position, muzzlePoint.transform.rotation * Quaternion.Euler(0, 180, 0), muzzlePoint.transform).GetComponent<ParticleSystem>();
@@ -223,6 +237,11 @@ public class CustomCharacterController : CapturableObject
 
         if (weaponIcon)
             weaponIcon.gameObject.SetActive(false);
+
+        if(controlBy.Enemy)
+        {
+            AIPath.enabled = true;
+        }
     }
 
     public override void LeaveObject()
@@ -253,6 +272,7 @@ public class CustomCharacterController : CapturableObject
         Destroy(_controller);
         Destroy(_currentMuzzle.gameObject);
         Destroy(gunSFX.gameObject);
+        Destroy(AIPath);
 
         foreach (var collider in GetComponentsInChildren<Collider>())
             collider.enabled = true;

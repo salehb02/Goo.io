@@ -89,11 +89,11 @@ public class GameManager : MonoBehaviour
         {
             players[i].Enemy = players[i] == Player ? false : true;
 
-            //players[i].SetName(nicknames[Random.Range(0, nicknames.Length)]);
-
             if (players[i].Enemy)
             {
-                var ai = players[i].gameObject.AddComponent<AIController>();
+                players[i].SetName(nicknames[Random.Range(0, nicknames.Length)]);
+                //var ai = players[i].gameObject.AddComponent<AIController>();
+                var ai = players[i].gameObject.GetComponent<AIController>();
                 ai.enabled = false;
             }
         }

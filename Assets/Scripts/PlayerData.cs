@@ -43,6 +43,7 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         _gooController = GetComponentInParent<GooController>();
 
         _gooController.SetColor(colors);
+        _gooController.ControlBy = this;
         InitHealth();
         InitUI();
         SetToGoo();

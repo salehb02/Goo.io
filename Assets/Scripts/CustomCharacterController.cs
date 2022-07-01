@@ -6,7 +6,7 @@ using Pathfinding;
 
 public class CustomCharacterController : CapturableObject
 {
-    public enum WeaponAnimationType { Pistol = 1, RifleOrSMG = 2}
+    public enum WeaponAnimationType { Pistol = 1, RifleOrSMG = 2 }
 
     [Space(4)]
     [Header("Object Specific Settings")]
@@ -45,6 +45,7 @@ public class CustomCharacterController : CapturableObject
     public bool OverrideRotation { get; set; } = false;
     private Coroutine _shootingCoroutine;
     private ParticleSystem _currentMuzzle;
+    private bool _init = false;
 
     // Animator parameters
     public const string WEAPON_BLEND = "Weapon Blend";
@@ -86,7 +87,7 @@ public class CustomCharacterController : CapturableObject
         _animator.SetFloat(WEAPON_BLEND, smoothCombatMode);
 
         // Set animator weapon fire ready
-        smoothFireMode = Mathf.Lerp(smoothFireMode, combatMode && Target ?  1 : 0, Time.deltaTime * 5f);
+        smoothFireMode = Mathf.Lerp(smoothFireMode, combatMode && Target ? 1 : 0, Time.deltaTime * 5f);
         _animator.SetFloat(FIRE_VALUE, smoothFireMode);
 
         // Combat mode
@@ -100,8 +101,8 @@ public class CustomCharacterController : CapturableObject
             _animator.SetLayerWeight(1, 1);
         }
 
-            // Weapon icon rotation
-            if (weaponIcon)
+        // Weapon icon rotation
+        if (weaponIcon)
         {
             weaponIcon.transform.Rotate(Vector3.up * rotationSpeed);
             weaponIcon.transform.position = weaponIconInitPos + (Vector3.up * Mathf.Sin(sinusMovementSpeed * Time.time) * sinusMaxMovement);
@@ -111,6 +112,9 @@ public class CustomCharacterController : CapturableObject
     public override void Init()
     {
         base.Init();
+
+        if (_init)
+            return;
 
         _animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
@@ -129,6 +133,8 @@ public class CustomCharacterController : CapturableObject
 
         if (muzzlePrefab)
             _currentMuzzle = Instantiate(muzzlePrefab, muzzlePoint.transform.position, muzzlePoint.transform.rotation * Quaternion.Euler(0, 180, 0), muzzlePoint.transform).GetComponent<ParticleSystem>();
+
+        _init = true;
     }
 
     private void Combat()
@@ -183,7 +189,6 @@ public class CustomCharacterController : CapturableObject
         _animator.SetTrigger(SHOOT_TRIGGER);
 
         PlayMuzzle();
-        //var bltRigid = Instantiate(this.bullet, muzzlePoint.transform.position, transform.rotation * Quaternion.Euler(90,0,0), null);
 
         var target = Target.GooMode ? Target.transform.position : Target.CapturableObject.venomEntrance.transform.position;
         var bltRigid = Instantiate(this.bullet, muzzlePoint.transform.position, Quaternion.LookRotation(target - muzzlePoint.transform.position), null);
@@ -193,7 +198,7 @@ public class CustomCharacterController : CapturableObject
         bullet.hitVFX = hitVFX;
         bullet.power = shootPower;
         bullet.characterController = this;
-        
+
         Destroy(bltRigid.gameObject, 10f);
 
         gunSFX.PlayOneShot(gunShotClips[Random.Range(0, gunShotClips.Length)]);
@@ -214,7 +219,7 @@ public class CustomCharacterController : CapturableObject
     private void SetSkinColor(PlayerData.CustomShaderColors colors)
     {
         var mat = new Material(skinnedMesh.sharedMaterial);
-        Properties.albedoColor.SetValue(mat, colors. mainColor);
+        Properties.albedoColor.SetValue(mat, colors.mainColor);
         Properties.goochBrightColor.SetValue(mat, colors.goochBright);
         Properties.goochDarkColor.SetValue(mat, colors.goochDark);
         Properties.rimBrightColor.SetValue(mat, colors.rimBright);
@@ -238,10 +243,26 @@ public class CustomCharacterController : CapturableObject
         if (weaponIcon)
             weaponIcon.gameObject.SetActive(false);
 
-        if(controlBy.Enemy)
+        if (controlBy.Enemy)
         {
             AIPath.enabled = true;
         }
+    }
+
+    public override void PreviewMode(PlayerData.CustomShaderColors colors)
+    {
+        base.PreviewMode(colors);
+
+        Init();
+
+        SetSkinColor(colors);
+
+        weaponModel.gameObject.SetActive(true);
+
+        if (weaponIcon)
+            weaponIcon.gameObject.SetActive(false);
+
+        EnterCombatMode();
     }
 
     public override void LeaveObject()
@@ -275,10 +296,16 @@ public class CustomCharacterController : CapturableObject
         Destroy(AIPath);
 
         foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.gameObject.layer = LayerMask.NameToLayer(ControlPanel.RAGDOLL_LAYER);
             collider.enabled = true;
+        }
 
         foreach (var rigid in GetComponentsInChildren<Rigidbody>())
             rigid.isKinematic = false;
+
+        var destoyer = skinnedMesh.gameObject.AddComponent<DestroyOnBecomeInvisible>();
+        destoyer.parent = gameObject;
 
         Destroy(this);
     }

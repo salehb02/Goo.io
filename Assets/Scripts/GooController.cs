@@ -38,8 +38,12 @@ public class GooController : MonoBehaviour
         if (!AIPath || AIPath.enabled == false)
         {
             _currentDirection = Vector3.Lerp(_currentDirection, _direction, Time.deltaTime * 5f);
+
             if (_rigid.velocity.magnitude < maxSpeed)
                 _rigid.AddForce(_currentDirection * acceleration);
+
+            if (_direction == Vector3.zero)
+                _rigid.velocity = _rigid.velocity * 0.9f;
         }
     }
 

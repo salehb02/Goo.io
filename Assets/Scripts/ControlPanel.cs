@@ -4,8 +4,10 @@ using UnityEngine;
 public class ControlPanel : ScriptableObject
 {
     public const string PLAYER_MONEY = "PLAYER_MONEY";
+    public const string RAGDOLL_LAYER = "Ragdoll";
 
     public SFXBank AudioBank;
+    public PlayerData.CustomShaderColors defaultColor;
 
     [Header("Prizes")]
     public Prize[] prizes;

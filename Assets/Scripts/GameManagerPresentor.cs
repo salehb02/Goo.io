@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using System.Linq;
+using Pathfinding;
 
 public class GameManagerPresentor : MonoBehaviour
 {
@@ -30,10 +31,8 @@ public class GameManagerPresentor : MonoBehaviour
     [SerializeField] private Button nextLevelButton;
     [Space(2)]
     [SerializeField] private GameObject prizePercentPivot;
-    [SerializeField] private Slider progressBar;
     [SerializeField] private TextMeshProUGUI progressPercentText;
-    [SerializeField] private TextMeshProUGUI prizeName;
-    [SerializeField] private Image prizeIcon;
+    [SerializeField] private GameObject prizeSpawnPosition;
 
     private GameManager _gameManager;
 
@@ -68,6 +67,7 @@ public class GameManagerPresentor : MonoBehaviour
             return;
         }
 
+        gameplayUI.gameObject.SetActive(false);
         loseUI.SetActive(true);
         loseText.transform.localScale = Vector3.zero;
         restartButton.gameObject.SetActive(false);
@@ -87,9 +87,11 @@ public class GameManagerPresentor : MonoBehaviour
             return;
         }
 
+        gameplayUI.gameObject.SetActive(false);
         winUI.SetActive(true);
         winText.transform.localScale = Vector3.zero;
         nextLevelButton.gameObject.SetActive(false);
+        prizePercentPivot.gameObject.SetActive(false);
 
         winText.transform.DOScale(1, 1).OnComplete(() =>
         {
@@ -98,20 +100,20 @@ public class GameManagerPresentor : MonoBehaviour
         });
     }
 
-    public void ProgressPrize(string prizeId,float lastPercent,float newPercent)
+    public void ProgressPrize(string prizeId, float lastPercent, float newPercent)
     {
-        var currentPrize = ControlPanel.Instance.prizes.Single(x=> x.id == prizeId);
+        var currentPrize = ControlPanel.Instance.prizes.Single(x => x.id == prizeId);
 
         if (currentPrize != null)
         {
             prizePercentPivot.gameObject.SetActive(true);
-            prizeIcon.sprite = currentPrize.icon;
-            prizeName.text = currentPrize.capturable.Name;
-
-            progressBar.value = lastPercent;
-            progressBar.maxValue = 100;
-            progressBar.DOValue(newPercent, 1f);
             progressPercentText.DOCounter((int)lastPercent, (int)newPercent, 1f).OnUpdate(() => progressPercentText.text += "%");
+
+            // Instance capturable
+            var capt = Instantiate(currentPrize.capturable, prizeSpawnPosition.transform.position, prizeSpawnPosition.transform.rotation, prizeSpawnPosition.transform);
+            capt.GetComponent<CharacterController>().enabled = false;
+            capt.GetComponent<AIPath>().enabled = false;
+            capt.PreviewMode(ControlPanel.Instance.defaultColor);
         }
         else
         {

@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d248f834a8bfb7d409cabeae8c824dbb, type: 3}
   m_Name: ControlPanel
   m_EditorClassIdentifier: 
+  defaultColor:
+    mainColor: {r: 1, g: 1, b: 1, a: 1}
+    goochBright: {r: 1, g: 1, b: 1, a: 1}
+    goochDark: {r: 0.58431375, g: 0.58431375, b: 0.58431375, a: 1}
+    rimBright: {r: 1, g: 1, b: 1, a: 1}
+    rimDark: {r: 0.7372549, g: 0.7372549, b: 0.7372549, a: 1}
   prizes:
   - id: CO_01
     capturable: {fileID: 1836047909301170754, guid: 2dbd13c165c36ba46ad8bfd579c36051, type: 3}

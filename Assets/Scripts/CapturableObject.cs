@@ -3,7 +3,6 @@ using UnityEngine;
 public class CapturableObject : MonoBehaviour
 {
     [Header("Global Settings")]
-    public string Name;
     public GameObject venomEntrance;
     public Vector3 UIOffset;
 
@@ -51,4 +50,6 @@ public class CapturableObject : MonoBehaviour
     {
         ControllingBy = null;
     }
+
+    public virtual void PreviewMode(PlayerData.CustomShaderColors colors) { }
 }

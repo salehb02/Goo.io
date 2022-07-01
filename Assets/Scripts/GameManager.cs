@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public Vector2 horizontalRandomPositionRange;
     public Vector2 verticalRandomPositionRange;
     public int capturableObjectsCount = 10;
+    public Collider excludeCollider;
 
     private IJoystickControllable _currentControllable;
     private CameraFollower _camera;
@@ -92,7 +93,6 @@ public class GameManager : MonoBehaviour
             if (players[i].Enemy)
             {
                 players[i].SetName(nicknames[Random.Range(0, nicknames.Length)]);
-                //var ai = players[i].gameObject.AddComponent<AIController>();
                 var ai = players[i].gameObject.GetComponent<AIController>();
                 ai.enabled = false;
             }
@@ -115,12 +115,18 @@ public class GameManager : MonoBehaviour
         if (!randomGenerate)
             return;
 
-        for (int i = 0; i < capturableObjectsCount; i++)
+        for (int i = 0; i < capturableObjectsCount;)
         {
+            var pos = spawnPointOrigin.transform.position + new Vector3(Random.Range(horizontalRandomPositionRange.x, horizontalRandomPositionRange.y), 0, Random.Range(verticalRandomPositionRange.x, verticalRandomPositionRange.y));
+
+            if (excludeCollider.bounds.Contains(pos))
+                continue;
+
             var cap = Instantiate(capturablesObjects[Random.Range(0, capturablesObjects.Length)]
-                , spawnPointOrigin.transform.position + new Vector3(Random.Range(horizontalRandomPositionRange.x, horizontalRandomPositionRange.y), 0, Random.Range(verticalRandomPositionRange.x, verticalRandomPositionRange.y)), Quaternion.identity, transform);
+                , pos, Quaternion.identity, transform);
 
             SpawnedCapturables.Add(cap);
+            i++;
         }
     }
 
@@ -165,6 +171,7 @@ public class GameManager : MonoBehaviour
     public void ShowLosePanel()
     {
         _presentor.SetLosePanelActivation(true);
+        _currentControllable.Movement(Vector3.zero);
     }
 
     public void CheckEndGame()
@@ -178,6 +185,7 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetString(CURRENT_PRIZE, ControlPanel.Instance.prizes[0].id);
 
             _presentor.SetWinPanelActivation(true, PlayerPrefs.GetString(CURRENT_PRIZE), PlayerPrefs.GetFloat(PRIZE_LAST_PERCENT));
+            _currentControllable.Movement(Vector3.zero);
 
             PlayerPrefs.SetFloat(PRIZE_LAST_PERCENT, PlayerPrefs.GetFloat(PRIZE_LAST_PERCENT) + ControlPanel.Instance.addPercentPerLevel);
 

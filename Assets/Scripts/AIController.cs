@@ -4,7 +4,8 @@ public class AIController : MonoBehaviour
 {
     public enum AIStatue { LookingForCapturable, MovingToCapturable, LookingForTarget, MovingToTarget, AttackingTarget, LeaveCapturedBody }
 
-    private Vector2 leaveBodyChance = new Vector2(0.6f,0.85f);
+    public Vector2 leaveBodyChance = new Vector2(0.6f, 0.85f);
+    [Range(0, 100)] public float healthPercentToLeaveBody = 30;
 
     private bool willLeave;
 
@@ -52,7 +53,7 @@ public class AIController : MonoBehaviour
                     else
                         currentStatue = AIStatue.MovingToTarget;
 
-                    if (currentCapturable && playerData.Health < playerData.maxHealth / 3f && willLeave && gameManager.SpawnedCapturables.Count > 0)
+                    if (currentCapturable && playerData.Health < playerData.maxHealth * healthPercentToLeaveBody / 100f && willLeave && gameManager.SpawnedCapturables.Count > 0)
                     {
                         currentStatue = AIStatue.LeaveCapturedBody;
                     }
@@ -84,7 +85,6 @@ public class AIController : MonoBehaviour
             }
 
             currentGoo.AIDestination = currentCapturable.transform.position;
-            //playerData.Movement((currentCapturable.transform.position - transform.position).normalized / 1.2f);
 
             return;
         }
@@ -102,15 +102,12 @@ public class AIController : MonoBehaviour
         if (currentStatue == AIStatue.MovingToTarget)
         {
             currentCapturable.AIDestination = currentTarget.transform.position;
-            //playerData.Movement((currentTarget.transform.position - transform.position).normalized / 1.2f);
 
             return;
         }
 
         if (currentStatue == AIStatue.AttackingTarget)
         {
-            //playerData.Movement(Vector3.zero);
-
             return;
         }
 
@@ -121,7 +118,6 @@ public class AIController : MonoBehaviour
 
             if (currentCapturable.ControllingBy == playerData)
             {
-                //currentCapturable.LeaveObject();
                 currentCapturable = null;
                 currentTarget = null;
                 playerData.SetToGoo();

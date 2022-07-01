@@ -283,8 +283,8 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: 6906d60f9eb2ced4aadade4205485325, type: 3}
   m_Controller: {fileID: 9100000, guid: 3f840fbb66e70c84ebfac1421d2774ef, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 1
-  m_ApplyRootMotion: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -320,7 +320,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 353f688e6d6a597468f85de5258ae69c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Fat Fire
   venomEntrance: {fileID: 1836047909643253628}
   UIOffset: {x: 0, y: 2.5, z: 0}
   speed: 11
@@ -415,16 +414,16 @@ MonoBehaviour:
   enableRotation: 1
   autoRepath:
     mode: 2
-    interval: 0.5
+    interval: 1
     sensitivity: 10
-    maximumInterval: 0.1
+    maximumInterval: 1
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
   rotationSpeed: 360
-  slowdownDistance: 4
+  slowdownDistance: 5
   pickNextWaypointDist: 2
-  endReachedDistance: 2
+  endReachedDistance: 3
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0

@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour
 {
-    public enum AIStatue { LookingForCapturable, MovingToCapturable, LookingForTarget, MovingToTarget, AttackingTarget, LeaveCapturedBody }
+    public enum AIStatue { LookingForCapturable, MovingToCapturable, LookingForTarget, MovingToTarget, AttackingTarget, LeaveCapturedBody, Flee }
 
     public Vector2 leaveBodyChance = new Vector2(0.6f, 0.85f);
     [Range(0, 100)] public float healthPercentToLeaveBody = 30;
+    public float fleeTime = 2f;
 
     private bool willLeave;
+    private float currentFleeTime;
 
     private PlayerData playerData;
     private AIStatue currentStatue;
@@ -53,7 +55,10 @@ public class AIController : MonoBehaviour
                     else
                         currentStatue = AIStatue.MovingToTarget;
 
-                    if (currentCapturable && playerData.Health < playerData.maxHealth * healthPercentToLeaveBody / 100f && willLeave && gameManager.SpawnedCapturables.Count > 0)
+                    if (playerData.Health <= playerData.maxHealth / 2f)
+                        currentStatue = AIStatue.Flee;
+
+                    if (playerData.Health < playerData.maxHealth * healthPercentToLeaveBody / 100f && willLeave)
                     {
                         currentStatue = AIStatue.LeaveCapturedBody;
                     }
@@ -125,6 +130,20 @@ public class AIController : MonoBehaviour
             }
 
             return;
+        }
+
+        if(currentStatue == AIStatue.Flee)
+        {
+            currentFleeTime += Time.deltaTime;
+            
+            if(currentFleeTime < fleeTime)
+            {
+
+            }
+            else
+            {
+
+            }
         }
     }
 

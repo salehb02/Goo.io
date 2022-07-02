@@ -9,8 +9,8 @@ public class GameManagerPresentor : MonoBehaviour
 {
     [Header("Gameplay")]
     [SerializeField] private GameObject gameplayUI;
-    [SerializeField] private TextMeshProUGUI capturablsCount;
-    [SerializeField] private Button ExitToGooButton;
+    [SerializeField] private TextMeshProUGUI alivePlayersCount;
+    [SerializeField] private Button exitToGoo;
 
     [Space(2)]
     [Header("Menu")]
@@ -32,6 +32,7 @@ public class GameManagerPresentor : MonoBehaviour
     [Space(2)]
     [SerializeField] private GameObject prizePercentPivot;
     [SerializeField] private TextMeshProUGUI progressPercentText;
+    [SerializeField] private Image prizeIconMask;
     [SerializeField] private GameObject prizeSpawnPosition;
 
     private GameManager _gameManager;
@@ -45,15 +46,15 @@ public class GameManagerPresentor : MonoBehaviour
         SetLosePanelActivation(false);
         SetWinPanelActivation(false);
 
-        ExitToGooButton.onClick.AddListener(_gameManager.ExitToGoo);
+        exitToGoo.onClick.AddListener(_gameManager.ExitToGoo);
         startGame.onClick.AddListener(_gameManager.StartGame);
         nameInputfield.onValueChanged.AddListener(_gameManager.SetUsername);
         restartButton.onClick.AddListener(_gameManager.RestartLevel);
         nextLevelButton.onClick.AddListener(_gameManager.NextLevel);
     }
 
-    public void SetCapturablesCount(int count) => capturablsCount.text = count.ToString();
-    public void SetExitToGooActivation(bool active) => ExitToGooButton.gameObject.SetActive(active);
+    public void SetAlivePlayersCount(int count) => alivePlayersCount.text = count.ToString();
+    public void SetExitToGooActivation(bool active) => exitToGoo.gameObject.SetActive(active);
     public void SetNameInputfield(string name) => nameInputfield.text = name;
     public void SetGameplayUIActivation(bool active) => gameplayUI.gameObject.SetActive(active);
     public void SetMenuUIActivation(bool active) => menuUI.gameObject.SetActive(active);
@@ -67,7 +68,7 @@ public class GameManagerPresentor : MonoBehaviour
             return;
         }
 
-        gameplayUI.gameObject.SetActive(false);
+        SetGameplayUIActivation(false);
         loseUI.SetActive(true);
         loseText.transform.localScale = Vector3.zero;
         restartButton.gameObject.SetActive(false);
@@ -87,7 +88,7 @@ public class GameManagerPresentor : MonoBehaviour
             return;
         }
 
-        gameplayUI.gameObject.SetActive(false);
+        SetGameplayUIActivation(false);
         winUI.SetActive(true);
         winText.transform.localScale = Vector3.zero;
         nextLevelButton.gameObject.SetActive(false);
@@ -104,10 +105,12 @@ public class GameManagerPresentor : MonoBehaviour
     {
         var currentPrize = ControlPanel.Instance.prizes.Single(x => x.id == prizeId);
 
-        if (currentPrize != null)
+        if (currentPrize != null && PlayerPrefs.GetInt(currentPrize.id) == 0)
         {
             prizePercentPivot.gameObject.SetActive(true);
             progressPercentText.DOCounter((int)lastPercent, (int)newPercent, 1f).OnUpdate(() => progressPercentText.text += "%");
+            prizeIconMask.fillAmount = lastPercent / 100f;
+            prizeIconMask.DOFillAmount(newPercent / 100f, 1f);
 
             // Instance capturable
             var capt = Instantiate(currentPrize.capturable, prizeSpawnPosition.transform.position, prizeSpawnPosition.transform.rotation, prizeSpawnPosition.transform);

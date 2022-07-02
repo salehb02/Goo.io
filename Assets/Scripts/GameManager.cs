@@ -13,17 +13,14 @@ public class GameManager : MonoBehaviour
     [Space(2)]
     [Header("Captuables Objects")]
     public CapturableObject[] capturablesObjects;
-    public bool randomGenerate;
+    private CapturableSpawnPoint[] capturableSpawnPoints;
     public bool removeLockedCapturables = false;
-    public GameObject spawnPointOrigin;
-    public Vector2 horizontalRandomPositionRange;
-    public Vector2 verticalRandomPositionRange;
     public int capturableObjectsCount = 10;
-    public Collider excludeCollider;
 
     private IJoystickControllable _currentControllable;
     private CameraFollower _camera;
     private GameManagerPresentor _presentor;
+    private bool _finish = false;
 
     public PlayerData Player { get; set; }
     public List<CapturableObject> SpawnedCapturables { get; private set; } = new List<CapturableObject>();
@@ -45,10 +42,8 @@ public class GameManager : MonoBehaviour
         _camera = FindObjectOfType<CameraFollower>();
         _presentor = GetComponent<GameManagerPresentor>();
         SpawnedCapturables = FindObjectsOfType<CapturableObject>().ToList();
+        capturableSpawnPoints = FindObjectsOfType<CapturableSpawnPoint>();
 
-        SpawnCapturables();
-        if(removeLockedCapturables)
-        CheckPrizeCapturables();
         UpdateCameraFollower();
         GetPlayers();
         ExitToGoo();
@@ -57,9 +52,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        _currentControllable.Movement(new Vector3(joyStick.Horizontal, 0, joyStick.Vertical));
-        _presentor.SetCapturablesCount(SpawnedCapturables.Count);
+        if (!_finish)
+            _currentControllable.Movement(new Vector3(joyStick.Horizontal, 0, joyStick.Vertical));
+        else
+            _currentControllable.Movement(Vector3.zero);
+
+        _presentor.SetAlivePlayersCount(players.Count - 1);
         CheckEndGame();
+        SpawnCapturables();
     }
 
     public void StartGame()
@@ -112,22 +112,43 @@ public class GameManager : MonoBehaviour
 
     private void SpawnCapturables()
     {
-        if (!randomGenerate)
+        if (SpawnedCapturables.Count >= capturableObjectsCount)
             return;
 
-        for (int i = 0; i < capturableObjectsCount;)
-        {
-            var pos = spawnPointOrigin.transform.position + new Vector3(Random.Range(horizontalRandomPositionRange.x, horizontalRandomPositionRange.y), 0, Random.Range(verticalRandomPositionRange.x, verticalRandomPositionRange.y));
+        var pos = capturableSpawnPoints[Random.Range(0, capturableSpawnPoints.Length)];
+        var colliders = Physics.OverlapSphere(pos.transform.position, 1f);
+        var nonStaticCollidersCount = 0;
 
-            if (excludeCollider.bounds.Contains(pos))
+        foreach (var collider in colliders)
+        {
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Floor") || collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
                 continue;
 
-            var cap = Instantiate(capturablesObjects[Random.Range(0, capturablesObjects.Length)]
-                , pos, Quaternion.identity, transform);
-
-            SpawnedCapturables.Add(cap);
-            i++;
+            nonStaticCollidersCount++;
         }
+
+        if (nonStaticCollidersCount > 0)
+            return;
+
+        var usableCapturables = capturablesObjects.ToList();
+
+        if (removeLockedCapturables)
+        {
+            foreach (var prizes in ControlPanel.Instance.prizes)
+            {
+                foreach (var capturable in usableCapturables)
+                {
+                    if (capturable == prizes.capturable && PlayerPrefs.GetInt(prizes.id) != 1)
+                    {
+                        usableCapturables.Remove(capturable);
+                    }
+                }
+            }
+        }
+
+        var cap = Instantiate(usableCapturables[Random.Range(0, usableCapturables.Count)], pos.transform.position, pos.transform.rotation, transform);
+
+        SpawnedCapturables.Add(cap);
     }
 
     private void LoadSavedUsername()
@@ -171,7 +192,7 @@ public class GameManager : MonoBehaviour
     public void ShowLosePanel()
     {
         _presentor.SetLosePanelActivation(true);
-        _currentControllable.Movement(Vector3.zero);
+        _finish = true;
     }
 
     public void CheckEndGame()
@@ -185,12 +206,12 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetString(CURRENT_PRIZE, ControlPanel.Instance.prizes[0].id);
 
             _presentor.SetWinPanelActivation(true, PlayerPrefs.GetString(CURRENT_PRIZE), PlayerPrefs.GetFloat(PRIZE_LAST_PERCENT));
-            _currentControllable.Movement(Vector3.zero);
 
             PlayerPrefs.SetFloat(PRIZE_LAST_PERCENT, PlayerPrefs.GetFloat(PRIZE_LAST_PERCENT) + ControlPanel.Instance.addPercentPerLevel);
 
             if (PlayerPrefs.GetFloat(PRIZE_LAST_PERCENT) >= 100)
             {
+                PlayerPrefs.SetInt(CURRENT_PRIZE, 1);
                 PlayerPrefs.SetFloat(PRIZE_LAST_PERCENT, 0);
 
                 var nextPrizeIDIndex = ControlPanel.Instance.prizes.ToList().FindIndex(x => x.id == PlayerPrefs.GetString(CURRENT_PRIZE));
@@ -204,21 +225,8 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+            _finish = true;
             Player = null;
-        }
-    }
-
-    public void CheckPrizeCapturables()
-    {
-        foreach(var prizes in ControlPanel.Instance.prizes)
-        {
-            foreach (var capturable in SpawnedCapturables)
-            {
-                if (capturable == prizes.capturable && PlayerPrefs.GetInt(prizes.id) != 1)
-                {
-                    Destroy(capturable.gameObject);
-                }
-            }
         }
     }
 }

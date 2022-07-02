@@ -23,8 +23,8 @@ Material:
   m_Name: Goo
   m_Shader: {fileID: 4800000, guid: 733fefdcde0d35f4b822d2935d5a22f4, type: 3}
   m_ShaderKeywords: _MK_ARTISTIC_PROJECTION_SCREEN_SPACE _MK_ENVIRONMENT_REFLECTIONS_AMBIENT
-    _MK_LIGHT_CEL _MK_RECEIVE_SHADOWS _MK_RIM_SPLIT _MK_SPECULAR_ISOTROPIC _MK_WRAPPED_DIFFUSE
-    _RECEIVESHADOWS_ON _WRAPPEDLIGHTING_ON
+    _MK_RECEIVE_SHADOWS _MK_SPECULAR_ISOTROPIC _MK_WRAPPED_DIFFUSE _RECEIVESHADOWS_ON
+    _WRAPPEDLIGHTING_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -200,7 +200,7 @@ Material:
     - _IridescenceSize: 0.57
     - _IridescenceSmoothness: 0.5
     - _IridescenceThresholdOffset: 0
-    - _Light: 1
+    - _Light: 0
     - _LightBands: 4
     - _LightBandsScale: 0.5
     - _LightThreshold: 0.5
@@ -213,7 +213,7 @@ Material:
     - _ReceiveShadows: 1
     - _RenderFace: 2
     - _RenderPriority: 0
-    - _Rim: 2
+    - _Rim: 0
     - _RimSize: 1.19
     - _RimSmoothness: 0.5
     - _RimThresholdOffset: 0.25

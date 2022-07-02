@@ -15,7 +15,9 @@ public class CameraFollower : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, _target.position + offset, smoothness * Time.deltaTime);
 
         var targetDirection = _target.transform.position - transform.position;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetDirection), Time.deltaTime * lookAtSmoothness);
+        Quaternion q = Quaternion.LookRotation(targetDirection);
+        q = Quaternion.Euler(45, q.eulerAngles.y, q.eulerAngles.z);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, q, Time.deltaTime * lookAtSmoothness);
     }
 
     public void SetTarget(Transform target)

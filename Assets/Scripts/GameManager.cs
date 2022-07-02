@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public FixedJoystick joyStick;
+    public VariableJoystick joyStick;
     public PlayerData startPlayer;
     public List<PlayerData> players = new List<PlayerData>();
     public string[] nicknames;

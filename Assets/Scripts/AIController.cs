@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AIController : MonoBehaviour
@@ -6,10 +7,11 @@ public class AIController : MonoBehaviour
 
     public Vector2 leaveBodyChance = new Vector2(0.6f, 0.85f);
     [Range(0, 100)] public float healthPercentToLeaveBody = 30;
-    public float fleeTime = 2f;
+    public float fleeTime;
 
     private bool willLeave;
-    private float currentFleeTime;
+    private float _currentFleeTime;
+    private Vector3 _fleeDestination;
 
     private PlayerData playerData;
     private AIStatue currentStatue;
@@ -29,7 +31,7 @@ public class AIController : MonoBehaviour
 
     private void Update()
     {
-        if(enabled && currentGoo.AIPath.enabled == false)
+        if (enabled && currentGoo.AIPath.enabled == false)
             currentGoo.AIPath.enabled = true;
 
         if (currentCapturable == null)
@@ -50,13 +52,13 @@ public class AIController : MonoBehaviour
                 }
                 else
                 {
-                    if (currentCapturable.Target)
-                        currentStatue = AIStatue.AttackingTarget;
-                    else
-                        currentStatue = AIStatue.MovingToTarget;
-
-                    if (playerData.Health <= playerData.maxHealth / 2f)
-                        currentStatue = AIStatue.Flee;
+                    if (currentStatue != AIStatue.Flee)
+                    {
+                        if (currentCapturable.Target)
+                            currentStatue = AIStatue.AttackingTarget;
+                        else
+                            currentStatue = AIStatue.MovingToTarget;
+                    }
 
                     if (playerData.Health < playerData.maxHealth * healthPercentToLeaveBody / 100f && willLeave)
                     {
@@ -113,6 +115,31 @@ public class AIController : MonoBehaviour
 
         if (currentStatue == AIStatue.AttackingTarget)
         {
+
+            if (playerData.Health <= playerData.maxHealth / 2f)
+            {
+
+                currentStatue = AIStatue.Flee;
+                _fleeDestination = gameManager.SpawnedCapturables[Random.Range(0, gameManager.SpawnedCapturables.Count)].transform.position +
+                    new Vector3(Random.Range(1, 3), 0, Random.Range(1, 3));
+            }
+
+            return;
+        }
+
+        if (currentStatue == AIStatue.Flee)
+        {
+            if (_currentFleeTime < fleeTime)
+            {
+                _currentFleeTime += Time.deltaTime;
+                currentCapturable.AIDestination = _fleeDestination;
+            }
+            else
+            {
+                _currentFleeTime = 0;
+                currentStatue = AIStatue.MovingToTarget;
+            }
+
             return;
         }
 
@@ -130,20 +157,6 @@ public class AIController : MonoBehaviour
             }
 
             return;
-        }
-
-        if(currentStatue == AIStatue.Flee)
-        {
-            currentFleeTime += Time.deltaTime;
-            
-            if(currentFleeTime < fleeTime)
-            {
-
-            }
-            else
-            {
-
-            }
         }
     }
 

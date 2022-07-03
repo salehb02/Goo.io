@@ -12,6 +12,7 @@ public class GooController : MonoBehaviour
 
     public new Renderer renderer;
     public ParticleSystem trailParticle;
+    public CapsuleCollider extraCollider;
 
     private Vector3 _direction;
     private Vector3 _currentDirection;
@@ -39,8 +40,9 @@ public class GooController : MonoBehaviour
         {
             _currentDirection = Vector3.Lerp(_currentDirection, _direction, Time.deltaTime * 5f);
 
-            if (_rigid.velocity.magnitude < maxSpeed)
-                _rigid.AddForce(_currentDirection * acceleration);
+            var force = _currentDirection * acceleration;
+            var velocity = _rigid.velocity + force;
+            _rigid.velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
 
             if (_direction == Vector3.zero)
                 _rigid.velocity = _rigid.velocity * 0.9f;
@@ -53,6 +55,9 @@ public class GooController : MonoBehaviour
         {
             AIPath.destination = AIDestination;
         }
+
+        extraCollider.transform.rotation = Quaternion.identity;
+        //extraCollider.transform.localPosition = Vector3.zero;
     }
 
     public void Movement(Vector3 vector3, bool force = false)

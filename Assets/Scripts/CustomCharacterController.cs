@@ -6,7 +6,7 @@ using Pathfinding;
 
 public class CustomCharacterController : CapturableObject
 {
-    public enum WeaponAnimationType { Pistol = 1, RifleOrSMG = 2 }
+    public enum WeaponAnimationType { Pistol = 1, RifleOrSMG = 2, FlameThrower = 3 }
 
     [Space(4)]
     [Header("Object Specific Settings")]

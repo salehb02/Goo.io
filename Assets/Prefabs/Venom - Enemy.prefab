@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2205384033215541014
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 657130442367727377}
+  - component: {fileID: 1907729822086204332}
+  m_Layer: 10
+  m_Name: Extra Collider (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &657130442367727377
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2205384033215541014}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7913001899088513677}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1907729822086204332
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2205384033215541014}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &5177258512121547541
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,7 +100,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5
+  m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7913001898405985939
 GameObject:
@@ -105,11 +150,11 @@ MonoBehaviour:
   characterDetector: {fileID: 5177258512121547531}
   maxHealth: 20
   colors:
-    mainColor: {r: 0, g: 0.6039216, b: 1, a: 1}
+    mainColor: {r: 1, g: 0, b: 0.6271739, a: 1}
     goochBright: {r: 1, g: 1, b: 1, a: 1}
     goochDark: {r: 0.4509804, g: 0.4509804, b: 0.4509804, a: 1}
-    rimBright: {r: 0, g: 0.6039216, b: 1, a: 1}
-    rimDark: {r: 0, g: 0.38039216, b: 0.6313726, a: 1}
+    rimBright: {r: 1, g: 0, b: 0.627451, a: 1}
+    rimDark: {r: 0.745283, g: 0, b: 0.46762854, a: 1}
   UIObject: {fileID: 2831651268050300303}
   healthbar: {fileID: 2831651268168185936}
   nameText: {fileID: 2831651268559258003}
@@ -127,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaveBodyChance: {x: 0.6, y: 0.85}
   healthPercentToLeaveBody: 30
+  fleeTime: 0
 --- !u!1 &7913001899088513665
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,6 +211,7 @@ Transform:
   - {fileID: 7913001899414534856}
   - {fileID: 7913001898405985949}
   - {fileID: 2831651268050300296}
+  - {fileID: 657130442367727377}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -259,11 +306,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 8
-  acceleration: 8000
+  acceleration: 3
   jumpForce: 20
   UIOffset: {x: 0, y: 1.5, z: 0}
   renderer: {fileID: 7913001899088513667}
   trailParticle: {fileID: 7913001899414534858}
+  extraCollider: {fileID: 1907729822086204332}
 --- !u!114 &5177258511516332054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,7 +448,7 @@ ParticleSystem:
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
-  useRigidbodyForVelocity: 1
+  useRigidbodyForVelocity: 0
   startDelay:
     serializedVersion: 2
     minMaxState: 0

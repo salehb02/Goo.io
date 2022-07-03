@@ -1639,57 +1639,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: colors.rimDark.b
-      value: 0.46762854
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: colors.rimDark.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: colors.rimDark.r
-      value: 0.745283
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: colors.mainColor.b
-      value: 0.6271739
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: colors.mainColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: colors.mainColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: colors.rimBright.b
-      value: 0.627451
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: colors.rimBright.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: colors.rimBright.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898919501500, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+    - target: {fileID: 2831651268280073533, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7913001898919501500, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+    - target: {fileID: 2831651268280073533, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7913001899088513665, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_Name
       value: Venom - Enemy (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001899088513665, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7913001899088513677, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_RootOrder
@@ -1734,18 +1694,6 @@ PrefabInstance:
     - target: {fileID: 7913001899088513677, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001899407166328, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.386
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001899407166328, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001899407166328, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.386
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
@@ -2637,6 +2585,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2831651268280073533, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831651268280073533, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7913001898405985938, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: colors.rimDark.b
       value: 0.03404235
@@ -2688,6 +2644,10 @@ PrefabInstance:
     - target: {fileID: 7913001899088513665, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7913001899088513676, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+      propertyPath: acceleration
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7913001899088513677, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_RootOrder
@@ -2777,7 +2737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d940f3ed109f2e4dadca1ac0b745f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joyStick: {fileID: 3810721424587400001}
+  joyStick: {fileID: 1440719786}
   startPlayer: {fileID: 30686151}
   players: []
   nicknames:
@@ -3188,6 +3148,17 @@ Transform:
   m_Father: {fileID: 594682040}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1440719786 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2319884504761956527, guid: 4951dd6ecaaf3054482b390eb7bf3110, type: 3}
+  m_PrefabInstance: {fileID: 2070004165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42844a4fccbd54746b90cade4ff70f73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1446872533
 GameObject:
   m_ObjectHideFlags: 0
@@ -4646,10 +4617,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
-    - target: {fileID: 2036943819757106675, guid: 4951dd6ecaaf3054482b390eb7bf3110, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4951dd6ecaaf3054482b390eb7bf3110, type: 3}
 --- !u!114 &2036943819317756602 stripped
@@ -4788,50 +4755,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.rimDark.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.rimDark.b
-      value: 0.09411765
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.rimDark.g
-      value: 0.09411765
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.rimDark.r
-      value: 0.09411765
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.mainColor.b
-      value: 0.22745098
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.mainColor.g
-      value: 0.22745098
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.mainColor.r
-      value: 0.22745098
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.rimBright.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.rimBright.b
-      value: 0.22745098
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.rimBright.g
-      value: 0.22745098
-      objectReference: {fileID: 0}
-    - target: {fileID: 3029216530684894216, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
-      propertyPath: colors.rimBright.r
-      value: 0.22745098
-      objectReference: {fileID: 0}
     - target: {fileID: 3029216531308718103, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -4854,15 +4777,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531308718103, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531308718103, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531308718103, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3029216531308718103, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4890,17 +4813,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e76248453ec9c94b8b94c5237f9e0b1, type: 3}
---- !u!114 &3810721424587400001 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3810721426053358212, guid: 4951dd6ecaaf3054482b390eb7bf3110, type: 3}
-  m_PrefabInstance: {fileID: 2070004165}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45977bbae16431c46a013576a1aea384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5177258512003753742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4908,19 +4820,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1393598433688950302, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: leaveBodyChance.x
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1393598433688950302, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
-      propertyPath: leaveBodyChance.y
-      value: 0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 7913001898919501500, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+    - target: {fileID: 2831651268280073533, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7913001898919501500, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+    - target: {fileID: 2831651268280073533, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}

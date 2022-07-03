@@ -120,8 +120,18 @@ public class AIController : MonoBehaviour
             {
 
                 currentStatue = AIStatue.Flee;
-                _fleeDestination = gameManager.SpawnedCapturables[Random.Range(0, gameManager.SpawnedCapturables.Count)].transform.position +
-                    new Vector3(Random.Range(1, 3), 0, Random.Range(1, 3));
+                var farestPoint = Vector3.zero;
+                var longestDistance = 0f;
+
+                foreach(var point in gameManager.capturableSpawnPoints)
+                {
+                    if(Vector3.Distance(point.transform.position, transform.position) > longestDistance)
+                    {
+                        farestPoint = point.transform.position;
+                    }
+                }
+
+                _fleeDestination = farestPoint;
             }
 
             return;

@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     [Space(2)]
     [Header("Captuables Objects")]
     public CapturableObject[] capturablesObjects;
-    private CapturableSpawnPoint[] capturableSpawnPoints;
+    public CapturableSpawnPoint[] capturableSpawnPoints { get; private set; }
     public bool removeLockedCapturables = false;
     public int capturableObjectsCount = 10;
 

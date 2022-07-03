@@ -55,8 +55,53 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5
+  m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2053603803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2053603804}
+  - component: {fileID: 2053603805}
+  m_Layer: 10
+  m_Name: Extra Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2053603804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053603803}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3029216531308718103}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &2053603805
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053603803}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &3029216530684894217
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,11 +149,11 @@ MonoBehaviour:
   characterDetector: {fileID: 454257041}
   maxHealth: 25
   colors:
-    mainColor: {r: 1, g: 0.3647059, b: 0, a: 1}
+    mainColor: {r: 0.22745098, g: 0.22745098, b: 0.22745098, a: 1}
     goochBright: {r: 1, g: 1, b: 1, a: 1}
     goochDark: {r: 0.4509804, g: 0.4509804, b: 0.4509804, a: 1}
-    rimBright: {r: 1, g: 0.29411766, b: 0, a: 0.65882355}
-    rimDark: {r: 0.65882355, g: 0.19607843, b: 0, a: 0.65882355}
+    rimBright: {r: 0.22745098, g: 0.22745098, b: 0.22745098, a: 1}
+    rimDark: {r: 0.09411765, g: 0.09411765, b: 0.09411765, a: 1}
   UIObject: {fileID: 3029216531438939284}
   healthbar: {fileID: 3029216531322403147}
   nameText: {fileID: 3029216531998752904}
@@ -147,6 +192,7 @@ Transform:
   - {fileID: 3029216531836049490}
   - {fileID: 3029216530684894215}
   - {fileID: 3029216531438939283}
+  - {fileID: 2053603804}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -241,11 +287,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 8
-  acceleration: 8000
+  acceleration: 3
   jumpForce: 20
   UIOffset: {x: 0, y: 1.5, z: 0}
   renderer: {fileID: 3029216531308718105}
   trailParticle: {fileID: 3029216531836049488}
+  extraCollider: {fileID: 2053603805}
 --- !u!1 &3029216531836049491
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,7 +344,7 @@ ParticleSystem:
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
-  useRigidbodyForVelocity: 1
+  useRigidbodyForVelocity: 0
   startDelay:
     serializedVersion: 2
     minMaxState: 0
@@ -5144,6 +5191,10 @@ PrefabInstance:
     - target: {fileID: 6420581393616755053, guid: f8a40e134dcd1d24fad2d013a090abf0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6420581393616755055, guid: f8a40e134dcd1d24fad2d013a090abf0, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6420581394395711960, guid: f8a40e134dcd1d24fad2d013a090abf0, type: 3}
       propertyPath: m_AnchorMax.x

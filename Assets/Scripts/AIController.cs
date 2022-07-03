@@ -197,7 +197,7 @@ public class AIController : MonoBehaviour
     {
         PlayerData nearest = null;
 
-        foreach (var player in gameManager.players)
+        foreach (var player in gameManager.CurrentPlayers)
         {
             if (player == playerData)
                 continue;

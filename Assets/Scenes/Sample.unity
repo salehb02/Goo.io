@@ -1973,6 +1973,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2503d8fe5d9c43c4c8836dc4e0ca7d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &861709960 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7686343401759611305, guid: 4951dd6ecaaf3054482b390eb7bf3110, type: 3}
+  m_PrefabInstance: {fileID: 2070004165}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &914867771
 GameObject:
   m_ObjectHideFlags: 0
@@ -2797,7 +2808,7 @@ MonoBehaviour:
   nextLevelButton: {fileID: 2036943819452038364}
   prizePercentPivot: {fileID: 2036943819446310332}
   progressPercentText: {fileID: 2036943819836210350}
-  prizeIconMask: {fileID: 0}
+  prizeIconMask: {fileID: 861709960}
   prizeSpawnPosition: {fileID: 2036943820106701887}
 --- !u!1 &1305579378
 GameObject:

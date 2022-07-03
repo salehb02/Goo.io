@@ -52,7 +52,10 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
     private void Update()
     {
         transform.localScale = Vector3.one;
+    }
 
+    private void LateUpdate()
+    {
         if (!UIObject)
             return;
 
@@ -169,8 +172,8 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
         if (!GooMode)
             SetToGoo();
 
-        if (_gameManager.players.Contains(this))
-            _gameManager.players.Remove(this);
+        if (_gameManager.CurrentPlayers.Contains(this))
+            _gameManager.CurrentPlayers.Remove(this);
 
         Destroy(UIObject.gameObject);
         Destroy(_gooController.gameObject);

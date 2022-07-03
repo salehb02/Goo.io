@@ -8,6 +8,8 @@ public class ControlPanel : ScriptableObject
 
     public SFXBank AudioBank;
     public PlayerData.CustomShaderColors defaultColor;
+    public string[] nicknames;
+    public bool removeLockedCapturables = false;
 
     [Header("Prizes")]
     public Prize[] prizes;

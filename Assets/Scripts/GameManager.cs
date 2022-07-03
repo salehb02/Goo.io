@@ -7,16 +7,12 @@ public class GameManager : MonoBehaviour
 {
     public VariableJoystick joyStick;
     public PlayerData startPlayer;
-    public List<PlayerData> players = new List<PlayerData>();
-    public string[] nicknames;
 
     [Space(2)]
     [Header("Captuables Objects")]
     public CapturableObject[] capturablesObjects;
-    public CapturableSpawnPoint[] capturableSpawnPoints { get; private set; }
-    public bool removeLockedCapturables = false;
     public int capturableObjectsCount = 10;
-
+    
     private IJoystickControllable _currentControllable;
     private CameraFollower _camera;
     private GameManagerPresentor _presentor;
@@ -24,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     public PlayerData Player { get; set; }
     public List<CapturableObject> SpawnedCapturables { get; private set; } = new List<CapturableObject>();
+    public List<PlayerData> CurrentPlayers { get; private set; } = new List<PlayerData>();
+    public CapturableSpawnPoint[] capturableSpawnPoints { get; private set; }
 
     public const string PLAYER_NAME = "PLAYER_NAME";
     public const string LAST_LEVEL = "LAST_LEVEL";
@@ -57,7 +55,7 @@ public class GameManager : MonoBehaviour
         else
             _currentControllable.Movement(Vector3.zero);
 
-        _presentor.SetAlivePlayersCount(players.Count - 1);
+        _presentor.SetAlivePlayersCount(CurrentPlayers.Count - 1);
         CheckEndGame();
         SpawnCapturables();
     }
@@ -67,7 +65,7 @@ public class GameManager : MonoBehaviour
         _presentor.SetGameplayUIActivation(true);
         _presentor.SetMenuUIActivation(false);
 
-        foreach (var player in players)
+        foreach (var player in CurrentPlayers)
         {
             var ai = player.GetComponent<AIController>();
             if (!ai)
@@ -84,16 +82,16 @@ public class GameManager : MonoBehaviour
 
     private void GetPlayers()
     {
-        players = FindObjectsOfType<PlayerData>().ToList();
+        CurrentPlayers = FindObjectsOfType<PlayerData>().ToList();
 
-        for (int i = 0; i < players.Count; i++)
+        for (int i = 0; i < CurrentPlayers.Count; i++)
         {
-            players[i].Enemy = players[i] == Player ? false : true;
+            CurrentPlayers[i].Enemy = CurrentPlayers[i] == Player ? false : true;
 
-            if (players[i].Enemy)
+            if (CurrentPlayers[i].Enemy)
             {
-                players[i].SetName(nicknames[Random.Range(0, nicknames.Length)]);
-                var ai = players[i].gameObject.GetComponent<AIController>();
+                CurrentPlayers[i].SetName(ControlPanel.Instance.nicknames[Random.Range(0, ControlPanel.Instance.nicknames.Length)]);
+                var ai = CurrentPlayers[i].gameObject.GetComponent<AIController>();
                 ai.enabled = false;
             }
         }
@@ -132,7 +130,7 @@ public class GameManager : MonoBehaviour
 
         var usableCapturables = capturablesObjects.ToList();
 
-        if (removeLockedCapturables)
+        if (ControlPanel.Instance. removeLockedCapturables)
         {
             foreach (var prizes in ControlPanel.Instance.prizes)
             {
@@ -200,7 +198,7 @@ public class GameManager : MonoBehaviour
         if (Player == null)
             return;
 
-        if (players.Count - 1 <= 0)
+        if (CurrentPlayers.Count - 1 <= 0)
         {
             if (!PlayerPrefs.HasKey(CURRENT_PRIZE))
                 PlayerPrefs.SetString(CURRENT_PRIZE, ControlPanel.Instance.prizes[0].id);

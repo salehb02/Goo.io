@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [Header("Captuables Objects")]
     public CapturableObject[] capturablesObjects;
     public int capturableObjectsCount = 10;
-    
+
     private IJoystickControllable _currentControllable;
     private CameraFollower _camera;
     private GameManagerPresentor _presentor;
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public const string PLAYER_NAME = "PLAYER_NAME";
     public const string LAST_LEVEL = "LAST_LEVEL";
     public const string CURRENT_PRIZE = "CURRENT_PRIZE";
-    public const string PRIZE_LAST_PERCENT = "PRIZE_LAST_PERCENT"; 
+    public const string PRIZE_LAST_PERCENT = "PRIZE_LAST_PERCENT";
 
     private void Awake()
     {
@@ -130,11 +130,14 @@ public class GameManager : MonoBehaviour
 
         var usableCapturables = capturablesObjects.ToList();
 
-        if (ControlPanel.Instance. removeLockedCapturables)
+        if (ControlPanel.Instance.removeLockedCapturables)
         {
-            foreach (var prizes in ControlPanel.Instance.prizes)
+            foreach (var prizes in ControlPanel.Instance.capturables)
             {
-                foreach (var capturable in usableCapturables)
+                if (prizes.unlocked)
+                    continue;
+
+                foreach (var capturable in usableCapturables.ToList())
                 {
                     if (capturable == prizes.capturable && PlayerPrefs.GetInt(prizes.id) != 1)
                     {
@@ -172,7 +175,7 @@ public class GameManager : MonoBehaviour
 
         if (nextLevelIndex < SceneManager.sceneCountInBuildSettings - 1)
             nextLevelIndex++;
-        else if(nextLevelIndex == SceneManager.sceneCountInBuildSettings - 1)
+        else if (nextLevelIndex == SceneManager.sceneCountInBuildSettings - 1)
             nextLevelIndex = UnityEngine.Random.Range(0, SceneManager.sceneCountInBuildSettings);
         else
             nextLevelIndex = 0;
@@ -203,7 +206,10 @@ public class GameManager : MonoBehaviour
         if (CurrentPlayers.Count - 1 <= 0)
         {
             if (!PlayerPrefs.HasKey(CURRENT_PRIZE))
-                PlayerPrefs.SetString(CURRENT_PRIZE, ControlPanel.Instance.prizes[0].id);
+            {
+                var firstLocked = ControlPanel.Instance.capturables.FirstOrDefault(x => x.unlocked == false);
+                PlayerPrefs.SetString(CURRENT_PRIZE, firstLocked.id);
+            }
 
             _presentor.SetWinPanelActivation(true, PlayerPrefs.GetString(CURRENT_PRIZE), PlayerPrefs.GetFloat(PRIZE_LAST_PERCENT));
 
@@ -214,14 +220,17 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetInt(CURRENT_PRIZE, 1);
                 PlayerPrefs.SetFloat(PRIZE_LAST_PERCENT, 0);
 
-                var nextPrizeIDIndex = ControlPanel.Instance.prizes.ToList().FindIndex(x => x.id == PlayerPrefs.GetString(CURRENT_PRIZE));
+                var nextPrizeIDIndex = ControlPanel.Instance.capturables.ToList().FindIndex(x => x.id == PlayerPrefs.GetString(CURRENT_PRIZE));
 
                 if (nextPrizeIDIndex != -1)
                 {
-                    if (nextPrizeIDIndex < ControlPanel.Instance.prizes.Length - 1)
-                        nextPrizeIDIndex++;
+                    for (int i = nextPrizeIDIndex; i < ControlPanel.Instance.capturables.Length; i++)
+                    {
+                        if (ControlPanel.Instance.capturables[i].unlocked == false)
+                            nextPrizeIDIndex = i;
+                    }
 
-                    PlayerPrefs.SetString(CURRENT_PRIZE, ControlPanel.Instance.prizes[nextPrizeIDIndex].id);
+                    PlayerPrefs.SetString(CURRENT_PRIZE, ControlPanel.Instance.capturables[nextPrizeIDIndex].id);
                 }
             }
 

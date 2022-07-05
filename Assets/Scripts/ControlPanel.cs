@@ -10,9 +10,10 @@ public class ControlPanel : ScriptableObject
     public PlayerData.CustomShaderColors defaultColor;
     public string[] nicknames;
     public bool removeLockedCapturables = false;
+    public float destoryRagdollTime = 5f;
 
     [Header("Prizes")]
-    public Prize[] prizes;
+    public Capturable[] capturables;
     public float addPercentPerLevel = 25f;
     
     public class SFXBank
@@ -21,11 +22,11 @@ public class ControlPanel : ScriptableObject
     }
 
     [System.Serializable]
-    public class Prize
+    public class Capturable
     {
         public string id;
+        public bool unlocked;
         public CapturableObject capturable;
-        public Sprite icon;
     }
 
     #region Singleton

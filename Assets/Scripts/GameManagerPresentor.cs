@@ -103,7 +103,7 @@ public class GameManagerPresentor : MonoBehaviour
 
     public void ProgressPrize(string prizeId, float lastPercent, float newPercent)
     {
-        var currentPrize = ControlPanel.Instance.prizes.Single(x => x.id == prizeId);
+        var currentPrize = ControlPanel.Instance.capturables.Single(x => x.id == prizeId);
 
         if (currentPrize != null && PlayerPrefs.GetInt(currentPrize.id) == 0)
         {

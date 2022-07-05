@@ -27,11 +27,15 @@ MonoBehaviour:
   - Kevin
   - Bill
   removeLockedCapturables: 1
-  prizes:
+  destoryRagdollTime: 5
+  capturables:
   - id: CO_01
-    capturable: {fileID: 1836047909301170754, guid: 2dbd13c165c36ba46ad8bfd579c36051, type: 3}
-    icon: {fileID: 21300000, guid: 85f7d0f9c9cf2f2478f93d89f4d8106d, type: 3}
+    unlocked: 1
+    capturable: {fileID: 5677103225373619287, guid: 2a8e9db5ccf881b43b6cfbdf4852c001, type: 3}
   - id: CO_02
+    unlocked: 0
+    capturable: {fileID: 1836047909301170754, guid: 2dbd13c165c36ba46ad8bfd579c36051, type: 3}
+  - id: CO_03
+    unlocked: 0
     capturable: {fileID: 9037683448918806118, guid: b3ab9e98d7fe04e42b882beb782a8cfb, type: 3}
-    icon: {fileID: 21300000, guid: 220d0f78ea9ecea45a8381a255cc07a0, type: 3}
   addPercentPerLevel: 25

@@ -308,5 +308,6 @@ public class CustomCharacterController : CapturableObject
         //destoyer.parent = gameObject;
 
         Destroy(this);
+        Destroy(gameObject, ControlPanel.Instance.destoryRagdollTime);
     }
 }

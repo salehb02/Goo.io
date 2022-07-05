@@ -304,8 +304,8 @@ public class CustomCharacterController : CapturableObject
         foreach (var rigid in GetComponentsInChildren<Rigidbody>())
             rigid.isKinematic = false;
 
-        var destoyer = skinnedMesh.gameObject.AddComponent<DestroyOnBecomeInvisible>();
-        destoyer.parent = gameObject;
+        //var destoyer = skinnedMesh.gameObject.AddComponent<DestroyOnBecomeInvisible>();
+        //destoyer.parent = gameObject;
 
         Destroy(this);
     }

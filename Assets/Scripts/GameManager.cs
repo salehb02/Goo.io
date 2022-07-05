@@ -170,8 +170,10 @@ public class GameManager : MonoBehaviour
     {
         var nextLevelIndex = SceneManager.GetActiveScene().buildIndex;
 
-        if (nextLevelIndex < SceneManager.sceneCount - 1)
+        if (nextLevelIndex < SceneManager.sceneCountInBuildSettings - 1)
             nextLevelIndex++;
+        else if(nextLevelIndex == SceneManager.sceneCountInBuildSettings - 1)
+            nextLevelIndex = UnityEngine.Random.Range(0, SceneManager.sceneCountInBuildSettings);
         else
             nextLevelIndex = 0;
 

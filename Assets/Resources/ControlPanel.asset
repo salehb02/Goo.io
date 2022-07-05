@@ -26,7 +26,7 @@ MonoBehaviour:
   - Tom
   - Kevin
   - Bill
-  removeLockedCapturables: 0
+  removeLockedCapturables: 1
   prizes:
   - id: CO_01
     capturable: {fileID: 1836047909301170754, guid: 2dbd13c165c36ba46ad8bfd579c36051, type: 3}

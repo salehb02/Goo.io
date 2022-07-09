@@ -1639,6 +1639,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1393598433688950302, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+      propertyPath: leaveBodyChance.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1393598433688950302, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+      propertyPath: leaveBodyChance.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2831651268280073533, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -4655,6 +4663,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 2036943820060093390, guid: 4951dd6ecaaf3054482b390eb7bf3110, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2036943820454030146, guid: 4951dd6ecaaf3054482b390eb7bf3110, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686343401759611305, guid: 4951dd6ecaaf3054482b390eb7bf3110, type: 3}
+      propertyPath: m_FillMethod
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4951dd6ecaaf3054482b390eb7bf3110, type: 3}
 --- !u!114 &2036943819317756602 stripped
@@ -4858,6 +4878,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1393598433688950302, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+      propertyPath: leaveBodyChance.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1393598433688950302, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
+      propertyPath: leaveBodyChance.y
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2831651268280073533, guid: 0e4879e501788d14e85aa9d103a80178, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

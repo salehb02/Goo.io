@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        //PlayerPrefs.DeleteAll();
         LoadLatestLevel();
     }
 
@@ -180,16 +181,17 @@ public class GameManager : MonoBehaviour
         else
             nextLevelIndex = 0;
 
-        PlayerPrefs.SetString(LAST_LEVEL, SceneManager.GetSceneByBuildIndex(nextLevelIndex).name);
-        SceneManager.LoadScene(SceneManager.GetSceneByBuildIndex(nextLevelIndex).name);
+        Debug.Log(nextLevelIndex);
+        PlayerPrefs.SetInt(LAST_LEVEL, nextLevelIndex);
+        SceneManager.LoadScene(nextLevelIndex);
     }
 
     private void LoadLatestLevel()
     {
-        if (PlayerPrefs.GetString(LAST_LEVEL) == SceneManager.GetActiveScene().name || PlayerPrefs.GetString(LAST_LEVEL) == "")
+        if (PlayerPrefs.GetInt(LAST_LEVEL) == SceneManager.GetActiveScene().buildIndex || PlayerPrefs.GetInt(LAST_LEVEL) == -1)
             return;
 
-        SceneManager.LoadScene(PlayerPrefs.GetString(LAST_LEVEL));
+        SceneManager.LoadScene(PlayerPrefs.GetInt(LAST_LEVEL));
     }
 
     public void ShowLosePanel()

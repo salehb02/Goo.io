@@ -105,6 +105,7 @@ public class PlayerData : MonoBehaviour, IJoystickControllable
     public void UpdateUI()
     {
         healthbar.value = Health;
+        if (Name == "") Name = "Jackson";
         nameText.text = Name;
     }
 

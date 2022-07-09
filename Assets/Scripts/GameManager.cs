@@ -7,11 +7,14 @@ public class GameManager : MonoBehaviour
 {
     public VariableJoystick joyStick;
     public PlayerData startPlayer;
+    public bool loadLastLevel = true;
+    public bool unlockAll = false;
 
     [Space(2)]
     [Header("Captuables Objects")]
     public CapturableObject[] capturablesObjects;
     public int capturableObjectsCount = 10;
+
 
     private IJoystickControllable _currentControllable;
     private CameraFollower _camera;
@@ -30,8 +33,20 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        //PlayerPrefs.DeleteAll();
-        LoadLatestLevel();
+        if (loadLastLevel)
+        {
+            LoadLatestLevel();
+        }
+        if(unlockAll)
+        {
+            for (int i = 0; i < ControlPanel.Instance.capturables.Length; i++)
+            {
+                ControlPanel.Instance.capturables[i].unlocked = true;
+                   
+            }
+
+        }
+
     }
 
     private void Start()
@@ -47,6 +62,9 @@ public class GameManager : MonoBehaviour
         GetPlayers();
         ExitToGoo();
         LoadSavedUsername();
+
+
+        StartCoroutine(SpawnCapturableAtTime());
     }
 
     private void Update()
@@ -58,7 +76,7 @@ public class GameManager : MonoBehaviour
 
         _presentor.SetAlivePlayersCount(CurrentPlayers.Count - 1);
         CheckEndGame();
-        SpawnCapturables();
+       // SpawnCapturables();
     }
 
     public void StartGame()
@@ -109,6 +127,7 @@ public class GameManager : MonoBehaviour
         Player.SetToGoo();
     }
 
+
     private void SpawnCapturables()
     {
         if (SpawnedCapturables.Count >= capturableObjectsCount)
@@ -153,6 +172,17 @@ public class GameManager : MonoBehaviour
         SpawnedCapturables.Add(cap);
     }
 
+    IEnumerator<WaitForSeconds> SpawnCapturableAtTime()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f,1));
+
+            SpawnCapturables();
+        }
+    }
+
+    
     private void LoadSavedUsername()
     {
         _presentor.SetNameInputfield(PlayerPrefs.GetString(PLAYER_NAME));
@@ -181,7 +211,6 @@ public class GameManager : MonoBehaviour
         else
             nextLevelIndex = 0;
 
-        Debug.Log(nextLevelIndex);
         PlayerPrefs.SetInt(LAST_LEVEL, nextLevelIndex);
         SceneManager.LoadScene(nextLevelIndex);
     }

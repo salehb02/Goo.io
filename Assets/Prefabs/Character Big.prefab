@@ -2198,7 +2198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   venomEntrance: {fileID: 9037683449127193432}
   UIOffset: {x: 0, y: 2.5, z: 0}
-  speed: 11
+  speed: 8
   skinnedMesh: {fileID: 311321761443670121}
   normalColors:
     mainColor: {r: 1, g: 1, b: 1, a: 1}

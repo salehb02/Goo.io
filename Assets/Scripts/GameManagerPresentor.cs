@@ -123,4 +123,12 @@ public class GameManagerPresentor : MonoBehaviour
             prizePercentPivot.gameObject.SetActive(false);
         }
     }
+
+    private void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    _gameManager.ExitToGoo();
+        //}
+    }
 }

@@ -37,12 +37,12 @@ public class GameManager : MonoBehaviour
         {
             LoadLatestLevel();
         }
-        if(unlockAll)
+        if (unlockAll)
         {
             for (int i = 0; i < ControlPanel.Instance.capturables.Length; i++)
             {
                 ControlPanel.Instance.capturables[i].unlocked = true;
-                   
+
             }
 
         }
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
 
         _presentor.SetAlivePlayersCount(CurrentPlayers.Count - 1);
         CheckEndGame();
-       // SpawnCapturables();
+        // SpawnCapturables();
     }
 
     public void StartGame()
@@ -167,6 +167,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        foreach (var item in usableCapturables)
+        {
+            Debug.Log(item.name);
+
+        }
+
         var cap = Instantiate(usableCapturables[Random.Range(0, usableCapturables.Count)], pos.transform.position, pos.transform.rotation, transform);
 
         SpawnedCapturables.Add(cap);
@@ -176,13 +182,13 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f,1));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1));
 
             SpawnCapturables();
         }
     }
 
-    
+
     private void LoadSavedUsername()
     {
         _presentor.SetNameInputfield(PlayerPrefs.GetString(PLAYER_NAME));

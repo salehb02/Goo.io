@@ -26,7 +26,7 @@ MonoBehaviour:
   - Tom
   - Kevin
   - Bill
-  removeLockedCapturables: 1
+  removeLockedCapturables: 0
   destoryRagdollTime: 5
   capturables:
   - id: CO_01
